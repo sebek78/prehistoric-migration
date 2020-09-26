@@ -8,7 +8,7 @@ export default class Component extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: "open" }); // create shadowRoot, (1)
     const component = template.content.cloneNode(true); // create element from template (2)
     // shadowRoot.innerHTML = "<h1>test</h1>"; // inline template
-    // lub shadowRoot.appendChild(document.importNode(template.content, true)) // direct append
+    // or shadowRoot.appendChild(document.importNode(template.content, true)) // direct append
     shadowRoot.appendChild(style); // template style
     shadowRoot.appendChild(component); // (3)
     // component.appendChild(nestedComponent)
