@@ -15,12 +15,8 @@ A simple turn-based strategy board game for a single player. The content languag
 
 ## Technology stack
 
-- Web Components ( JavaScript )
+- [Svelte](https://svelte.dev/) (JavaScript framework)
 
 ## Project status
 
-**In progres**. My educational goal for this project is to try and play with WebComponents technology.
-I'm also going to use Object-oriented programming in JavaScript.
-
-I use `es6-string-html` and `es6-string-css plugins` in my Visual Studio Code to have a
-color syntax highlighting inside template literals (template strings).
+**In progres**. My educational goal for this project is to play with the Svelte framework. I'm also going to use Object-oriented programming in JavaScript.
