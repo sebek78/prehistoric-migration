@@ -1,6 +1,5 @@
 <script>
-  export let innerText = "Click";
-  export let handleClick;
+  export let innerText = "";
 </script>
 
 <style>
@@ -25,4 +24,4 @@
   }
 </style>
 
-<button on:click={handleClick}>{innerText}</button>
+<button>{innerText}</button>

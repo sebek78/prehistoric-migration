@@ -1,19 +1,7 @@
 <script>
+  import { Link } from "svelte-routing";
   import MenuButton from "./MenuButton.svelte";
   let logo = "assets/logo-premig.svg";
-
-  export let view;
-
-  function handleClick() {
-    view.goGameView();
-  }
-
-  /* tutorial expression example 
-    $: doubled = count * 2; 
-    $: sum = numbers.reduce((t, n) => t + n, 0);
-    $: { }
-    $: if () {}
-  */
 </script>
 
 <style>
@@ -110,7 +98,9 @@
       <li>Prehistoryczna era</li>
     </ul>
     <nav class="buttons">
-      <MenuButton innerText={'Nowa gra'} {handleClick} />
+      <Link to="game">
+        <MenuButton innerText={'Nowa gra'} />
+      </Link>
     </nav>
   </div>
 </main>
