@@ -1,6 +1,4 @@
-import Player from "./player";
-
-const defaultTribes = [
+export const defaultTribes = [
   {
     name: "Tygrysy",
     color: "#ff3300",
@@ -19,15 +17,15 @@ const defaultTribes = [
   },
 ];
 
-class Tribe extends Player {
-  constructor(index, isHuman = false) {
-    super(isHuman);
+class Tribe {
+  constructor(index, control = false) {
     this.name = defaultTribes[index].name;
     this.color = defaultTribes[index].color;
-    this.isPlayer = this.isPlayer;
+    this.controlByPlayer = control;
+    this.setPlayer = this.setPlayer;
   }
-  isPlayer(index) {
-    return this.list[index].isPlayer;
+  setPlayer() {
+    this.controlByPlayer = true;
   }
 }
 

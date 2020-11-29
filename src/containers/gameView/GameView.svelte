@@ -3,7 +3,9 @@
   import { Link } from "svelte-routing";
   import MenuButton from "../homepage/MenuButton.svelte";
   import Map from "./Map.svelte";
-  export let map;
+  export let data;
+
+  const { map } = data;
   /*
   beforeUpdate(() => {
     console.log("before update");

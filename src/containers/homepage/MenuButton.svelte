@@ -1,4 +1,5 @@
 <script>
+  import { colors } from "../../globalStyles";
   export let innerText = "";
 </script>
 
@@ -7,7 +8,8 @@
     box-sizing: border-box;
     padding: 6px 12px 6px 12px;
     margin: 8px;
-    width: 160px;
+    min-width: 160px;
+    width: max-content;
     border-radius: 4px;
     font-size: 18px;
     font-weight: bold;
@@ -18,10 +20,15 @@
     letter-spacing: 1px;
     border: none;
     outline: none;
-    background-color: #b5c177; /* var(--bg-action); */
-    color: #2b4227; /* var(--link-color); */
+    background-color: var(--bg-action);
+    color: var(--link-color);
     cursor: pointer;
+    white-space: nowrap;
   }
 </style>
 
-<button>{innerText}</button>
+<button
+  style="--bg-action: {colors.bgAction};--link-color: {colors.linkColor}"
+  on:click>
+  {innerText}
+</button>

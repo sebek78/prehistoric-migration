@@ -1,12 +1,6 @@
-:root {
-	--bg-color: #fbe1bc,
-	--bg-action: #B5C177,
-	--font-dark: #583709,
-	--link-color: #2B4227,
-}
 body {
-	background-color: #fbe1bc; /* var(--bg-color); */
-	margin: 0;
-	padding: 0;
-	font-family: "Nunito", Arial, Helvetica, sans-serif;
+  background-color: #fbe1bc;
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", Arial, Helvetica, sans-serif;
 }

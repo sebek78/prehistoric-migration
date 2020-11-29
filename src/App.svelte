@@ -4,21 +4,26 @@
   import GameView from "./containers/gameView/GameView.svelte";
   import Map from "./models/map/map";
   import Tribes from "./models/tribe/tribes";
+  import GameStatus from "./models/gameStatus";
   export let url = "";
 
   const map = new Map();
-  const playerSelection = 2;
-  const tribes = new Tribes(playerSelection);
-  console.log(tribes);
+  const tribes = new Tribes();
+  const game = new GameStatus();
+  const data = {
+    game,
+    tribes,
+    map,
+  };
 </script>
 
 <Router {url}>
   <div>
     <Route path="game">
-      <GameView {map} />
+      <GameView {data} />
     </Route>
     <Route path="/">
-      <Homepage />
+      <Homepage {data} />
     </Route>
   </div>
 </Router>
