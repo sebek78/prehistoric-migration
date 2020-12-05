@@ -91,3 +91,63 @@ footer {
   font-size: 16px;
   line-height: 24px;
 }
+.entry-dialog {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.entry-dialog__box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  background-color: $bgColor;
+  min-width: 300px;
+  width: 50vw;
+  padding: 20px;
+  border: 2px solid red;
+  border-radius: 4px;
+  z-index: 2;
+}
+.buttons-tribes {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.text {
+  font-size: 18px;
+  margin: 0 0 20px;
+}
+.tribes {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.tribe-button {
+  width: 120px;
+  margin: 10px;
+  border: 2px solid red;
+  border-radius: 4px;
+}
+.square {
+  margin: 0 auto;
+  height: 90px;
+  background-color: red;
+}
+.label-text {
+  line-height: 30px;
+  text-align: center;
+  font-size: 18px;
+  margin: 0;
+}
+.input {
+  display: block;
+  height: 20px;
+  margin: 0px auto;
+}

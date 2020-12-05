@@ -15,9 +15,35 @@
         <nav class="buttons">
             <button class="button" (click)="toggleDialog()">{{innerText}}</button>
         </nav>
-        <div *ngIf="showEnrtyDialog">
-            <!-- <EntryDialog {toggleDialog} {data} /> -->
-            Entry dialog
+        <div *ngIf="showEntryDialog">
+            <div class="entry-dialog" (click)="handleClose()"></div>
+            <div class="entry-dialog__box">
+                <p class="text">
+                    Rozpoczynasz rozwój i ekspansję prehistorycznego plemienia. Aby zwyciężyć
+                    musisz <strong>zasiedlić 16 lub więcej prowincji</strong>
+                    i rozwinąć technologię do ery neolitycznej. Czyli trzeba odkryć<strong>
+                        co najmniej dwa wynalazki w każdej z 11 kategorii</strong>.
+                </p>
+                <p class="text">Wybierz plemię:</p>
+                <div class="tribes">
+                    <label class="tribe-button"  *ngFor="let tribe of defaultTribes; let i = index">
+                        <div class="square"></div>
+                        <p class="label-text">{{tribe.name}}</p>
+                        <input
+                            id="tribe.name"
+                            name="tribe"
+                            class="input"
+                            type="radio"
+                            (change)="handleInputChange(i)"
+                            [checked]="selectedInput(i)"
+                        >
+                    </label>
+                </div>
+                <div class="buttons-tribes">
+                    <button class="button" (click)="toggleDialog()">Menu główne</button>
+                    <button class="button" (click)="handleStartGame()">Graj</button>
+                </div>
+            </div>
         </div>
     </div>
 </main>

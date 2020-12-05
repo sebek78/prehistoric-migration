@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ITribeLabel } from '../app.component'
 
 interface Game {
   isRunning: boolean;
@@ -10,23 +11,41 @@ interface Game {
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
-  showEnrtyDialog = false;
+  constructor() {}
+  ngOnInit(): void {}
+
+  @Input() defaultTribes: Array<ITribeLabel>;
+
+  showEntryDialog = false;
   game: Game = {
     isRunning: false,
   };
-  innerText = this.game.isRunning ? "Kontynuuj" : "Nowa gra"
+  innerText = this.game.isRunning ? "Kontynuuj" : "Nowa gra";
+  selectedTribe = 0;
+  
 
-  constructor() { }
-
-  ngOnInit(): void {}
-
-  toggleDialog(): void {
+  toggleDialog(){
     if (!this.game.isRunning) {
-      this.showEnrtyDialog = !this.showEnrtyDialog;
+      this.showEntryDialog = !this.showEntryDialog;
     } else {
-      // navigate("/game", { replace: true });
-      console.log('navigate to game');
+      console.log('/game');
     }
   }
+  handleClose(){
+    this.toggleDialog();
+  } 
 
+  selectedInput(i: number){
+    return this.selectedTribe === i;
+  }
+
+  handleInputChange(i: number){
+    this.selectedTribe = i;
+  }
+
+  handleStartGame(){
+    this.game.isRunning = true;
+    this.showEntryDialog = false;
+    console.log('/game, start game');
+  }
 }
