@@ -1,5 +1,5 @@
 <script>
-  import { colors } from "../../globalStyles";
+  import { colors } from "../globalStyles";
   export let innerText = "";
 </script>
 

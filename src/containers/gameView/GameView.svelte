@@ -1,7 +1,7 @@
 <script>
   //import { afterUpdate, beforeUpdate, onDestroy, onMount } from "svelte";
   import { Link } from "svelte-routing";
-  import MenuButton from "../homepage/MenuButton.svelte";
+  import MenuButton from "../../components/MenuButton.svelte";
   import Map from "./Map.svelte";
   export let data;
 

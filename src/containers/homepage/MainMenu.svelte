@@ -1,7 +1,7 @@
 <script>
   import { navigate } from "svelte-routing";
-  import MenuButton from "./MenuButton.svelte";
-  import EntryDialog from "./EntryDialog.svelte";
+  import MenuButton from "../../components/MenuButton.svelte";
+  import EntryDialog from "../entryDialog/EntryDialog.svelte";
   export let data;
 
   const { game } = data;
