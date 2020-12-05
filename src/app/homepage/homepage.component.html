@@ -1,0 +1,26 @@
+<main>
+    <header class="header">
+        <h1 class=""><img class="header__title" src="assets/logo-premig.svg" alt="Prehistoryczna migracja logo" /></h1>
+        <h2 class="header__subtitle">Prowadź prehistoryczne plemię</h2>
+        <h3 class="header__warning">Gra jeszcze nie grywalna</h3>
+    </header>
+    <div class="wrapper">
+        <ul class="featuresList">
+            <li>Turowa gra strategiczna</li>
+            <li>Dla pojedynczego gracza</li>
+            <li>Styl gry planszowej i karcianej</li>
+            <li>Wysoka losowość</li>
+            <li>Prehistoryczna era</li>
+        </ul>
+        <nav class="buttons">
+            <button class="button" (click)="toggleDialog()">{{innerText}}</button>
+        </nav>
+        <div *ngIf="showEnrtyDialog">
+            <!-- <EntryDialog {toggleDialog} {data} /> -->
+            Entry dialog
+        </div>
+    </div>
+</main>
+<footer>
+    <a class="link" href="http://mybytes.pl">mybytes.pl</a>
+</footer>

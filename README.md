@@ -15,7 +15,7 @@ A simple turn-based strategy board game for a single player. The content languag
 
 ## Technology stack
 
-- [Svelte](https://svelte.dev/) (JavaScript framework)
+- [Angular](https://angular.io/) (JavaScript framework)
 
 ## Project status
 
