@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ITribeLabel } from '../app.component'
-
-interface Game {
-  isRunning: boolean;
-}
+import { TribesService } from '../tribes.service'
+import { GameService } from '../game.service'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-homepage',
@@ -11,24 +9,24 @@ interface Game {
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
-  constructor() {}
+  constructor( 
+    private tribesService: TribesService,
+    private gameService: GameService,
+    private router: Router
+  ){}
   ngOnInit(): void {}
 
-  @Input() defaultTribes: Array<ITribeLabel>;
+  defaultTribes = this.tribesService.getDefaultTribes();
 
   showEntryDialog = false;
-  game: Game = {
-    isRunning: false,
-  };
-  innerText = this.game.isRunning ? "Kontynuuj" : "Nowa gra";
+  innerText = this.gameService.isRunning ? "Kontynuuj" : "Nowa gra";
   selectedTribe = 0;
-  
 
   toggleDialog(){
-    if (!this.game.isRunning) {
+    if (!this.gameService.isRunning) {
       this.showEntryDialog = !this.showEntryDialog;
     } else {
-      console.log('/game');
+      this.router.navigateByUrl('/game')
     }
   }
   handleClose(){
@@ -44,8 +42,9 @@ export class HomepageComponent implements OnInit {
   }
 
   handleStartGame(){
-    this.game.isRunning = true;
     this.showEntryDialog = false;
-    console.log('/game, start game');
+    this.gameService.isRunning = true;
+    this.tribesService.createTribes();
+    this.tribesService.setPlayer(this.selectedTribe)
   }
 }

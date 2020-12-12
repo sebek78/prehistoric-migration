@@ -132,13 +132,13 @@ footer {
 .tribe-button {
   width: 120px;
   margin: 10px;
-  border: 2px solid red;
+  border-width: 2px;
+  border-style: solid;
   border-radius: 4px;
 }
 .square {
   margin: 0 auto;
   height: 90px;
-  background-color: red;
 }
 .label-text {
   line-height: 30px;

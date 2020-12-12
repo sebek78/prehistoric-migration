@@ -26,8 +26,8 @@
                 </p>
                 <p class="text">Wybierz plemię:</p>
                 <div class="tribes">
-                    <label class="tribe-button"  *ngFor="let tribe of defaultTribes; let i = index">
-                        <div class="square"></div>
+                    <label class="tribe-button" [ngStyle]="{'border-color': tribe.color}" *ngFor="let tribe of defaultTribes; let i = index">
+                        <div class="square" [ngStyle]="{'background-color': tribe.color}"></div>
                         <p class="label-text">{{tribe.name}}</p>
                         <input
                             id="tribe.name"
@@ -41,7 +41,7 @@
                 </div>
                 <div class="buttons-tribes">
                     <button class="button" (click)="toggleDialog()">Menu główne</button>
-                    <button class="button" (click)="handleStartGame()">Graj</button>
+                    <button routerLink="/game" class="button" (click)="handleStartGame()">Graj</button>
                 </div>
             </div>
         </div>

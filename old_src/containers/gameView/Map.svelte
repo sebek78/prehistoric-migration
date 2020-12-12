@@ -1,8 +1,3 @@
-<script>
-  export let map;
-  const waterClassStyle = "field-water";
-</script>
-
 <style>
   .map {
     width: 360px;
@@ -23,12 +18,3 @@
     background-color: skyblue;
   }
 </style>
-
-<div>Mapa</div>
-<div class="map">
-  {#each map.fields as field}
-    <div class="field {field.water && waterClassStyle}">
-      {`id: ${field.id}, (${field.x},${field.y})`}
-    </div>
-  {/each}
-</div>
