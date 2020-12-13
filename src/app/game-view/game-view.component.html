@@ -1,6 +1,4 @@
-<button routerLink="/" class="button">Menu główne</button>
+<app-menu-button [innerText]="'Menu główne'" routerLink="/"></app-menu-button>
 
 <p>Widok gry</p>
-<div>Mapa</div>
-<div class="map">
-</div>
+<app-map [fields]="fields">

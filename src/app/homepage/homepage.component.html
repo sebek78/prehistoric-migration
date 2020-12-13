@@ -13,7 +13,7 @@
             <li>Prehistoryczna era</li>
         </ul>
         <nav class="buttons">
-            <button class="button" (click)="toggleDialog()">{{innerText}}</button>
+            <app-menu-button (click)="toggleDialog()" [innerText]="innerText"></app-menu-button>
         </nav>
         <div *ngIf="showEntryDialog">
             <div class="entry-dialog" (click)="handleClose()"></div>
@@ -26,22 +26,17 @@
                 </p>
                 <p class="text">Wybierz plemię:</p>
                 <div class="tribes">
-                    <label class="tribe-button" [ngStyle]="{'border-color': tribe.color}" *ngFor="let tribe of defaultTribes; let i = index">
-                        <div class="square" [ngStyle]="{'background-color': tribe.color}"></div>
-                        <p class="label-text">{{tribe.name}}</p>
-                        <input
-                            id="tribe.name"
-                            name="tribe"
-                            class="input"
-                            type="radio"
-                            (change)="handleInputChange(i)"
-                            [checked]="selectedInput(i)"
-                        >
-                    </label>
+                    <app-tribe-button 
+                        *ngFor="let tribe of defaultTribes; let i = index" 
+                        [tribe]="tribe" 
+                        [i]="i"
+                        (selectTribe)="onSelectTribe(i)"
+                        [checked]="selectedInput(i)"
+                    ></app-tribe-button>
                 </div>
                 <div class="buttons-tribes">
-                    <button class="button" (click)="toggleDialog()">Menu główne</button>
-                    <button routerLink="/game" class="button" (click)="handleStartGame()">Graj</button>
+                    <app-menu-button (click)="toggleDialog()" [innerText]="'Menu główne'"></app-menu-button>
+                    <app-menu-button (click)="handleStartGame()" [innerText]="'Graj'" routerLink="/game"></app-menu-button>
                 </div>
             </div>
         </div>

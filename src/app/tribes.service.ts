@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-interface ITribe {
+export interface ITribe {
   name: string,
   color: string,
   controledByPlayer: boolean,
@@ -10,9 +10,11 @@ interface ITribe {
   providedIn: 'root'
 })
 export class TribesService {
-  constructor() { }
+  constructor() { 
+    this.createTribes();
+  }
 
-  defaultTribes = [
+  private defaultTribes = [
     {
       name: "Tygrysy",
       color: "#ff3300",
@@ -36,8 +38,8 @@ export class TribesService {
 
   /* Tribes */
 
-  getDefaultTribes() { 
-    return this.defaultTribes
+  getTribes() { 
+    return this.list
   }
 
   createTribes() {

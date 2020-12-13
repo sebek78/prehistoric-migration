@@ -54,27 +54,6 @@ main {
   align-items: center;
   width: 320px;
 }
-.button {
-  box-sizing: border-box;
-  padding: 6px 12px 6px 12px;
-  margin: 8px;
-  min-width: 160px;
-  width: max-content;
-  border-radius: 4px;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 24px;
-  text-align: center;
-  text-transform: uppercase;
-  text-decoration: none;
-  letter-spacing: 1px;
-  border: none;
-  outline: none;
-  background-color: $bgAction;
-  color: $linkColor;
-  cursor: pointer;
-  white-space: nowrap;
-}
 footer {
   width: 100vw;
   padding: 1vw 0;
@@ -128,26 +107,4 @@ footer {
   justify-content: space-evenly;
   flex-wrap: wrap;
   margin-bottom: 20px;
-}
-.tribe-button {
-  width: 120px;
-  margin: 10px;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 4px;
-}
-.square {
-  margin: 0 auto;
-  height: 90px;
-}
-.label-text {
-  line-height: 30px;
-  text-align: center;
-  font-size: 18px;
-  margin: 0;
-}
-.input {
-  display: block;
-  height: 20px;
-  margin: 0px auto;
 }

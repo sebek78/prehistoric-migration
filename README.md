@@ -15,8 +15,10 @@ A simple turn-based strategy board game for a single player. The content languag
 
 ## Technology stack
 
-- [Angular](https://angular.io/) (JavaScript framework)
+- [Angular](https://angular.io/)
+- [TypeScript](https://www.typescriptlang.org/)
 
 ## Project status
 
-**In progres**. My educational goal for this project is to play with the Svelte framework. I'm also going to use Object-oriented programming in JavaScript.
+**In progres**. My educational goal for this project is to learn these
+technologies: Object-oriented programming, TypeScript, and Angular framework.

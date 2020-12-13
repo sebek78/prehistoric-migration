@@ -16,8 +16,7 @@ export class HomepageComponent implements OnInit {
   ){}
   ngOnInit(): void {}
 
-  defaultTribes = this.tribesService.getDefaultTribes();
-
+  defaultTribes = this.tribesService.getTribes();
   showEntryDialog = false;
   innerText = this.gameService.isRunning ? "Kontynuuj" : "Nowa gra";
   selectedTribe = 0;
@@ -37,14 +36,12 @@ export class HomepageComponent implements OnInit {
     return this.selectedTribe === i;
   }
 
-  handleInputChange(i: number){
-    this.selectedTribe = i;
-  }
-
   handleStartGame(){
     this.showEntryDialog = false;
     this.gameService.isRunning = true;
-    this.tribesService.createTribes();
     this.tribesService.setPlayer(this.selectedTribe)
+  }
+  onSelectTribe(i: number){
+    this.selectedTribe = i;
   }
 }
