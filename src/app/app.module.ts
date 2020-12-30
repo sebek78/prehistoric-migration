@@ -8,6 +8,8 @@ import { GameViewComponent } from './game-view/game-view.component';
 import { MapComponent } from './map/map.component';
 import { TribeButtonComponent } from './tribe-button/tribe-button.component';
 import { MenuButtonComponent } from './menu-button/menu-button.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ManualComponent } from './manual/manual.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { MenuButtonComponent } from './menu-button/menu-button.component';
     GameViewComponent,
     MapComponent,
     TribeButtonComponent,
-    MenuButtonComponent
+    MenuButtonComponent,
+    NotFoundComponent,
+    ManualComponent
   ],
   imports: [
     BrowserModule,

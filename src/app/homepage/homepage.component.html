@@ -14,6 +14,7 @@
         </ul>
         <nav class="buttons">
             <app-menu-button (click)="toggleDialog()" [innerText]="innerText"></app-menu-button>
+            <app-menu-button routerLink="/manual" [innerText]="'Zasady gry'"></app-menu-button>
         </nav>
         <div *ngIf="showEntryDialog">
             <div class="entry-dialog" (click)="handleClose()"></div>
