@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from '../game.service'
-import { TribesService } from '../tribes.service' 
-import { MapService} from '../map.service'
+import { GameService } from '../core/game.service'
+import { TribesService } from '../core/tribes.service' 
+import { MapService} from '../core/map.service'
 
 @Component({
   selector: 'app-game-view',
@@ -19,8 +19,8 @@ export class GameViewComponent implements OnInit {
   fields = this.mapService.fields
 
   ngOnInit(): void {
-    console.log(this.gameService)
-    console.log(this.tribesService)
-    console.log(this.mapService)
+    //console.log(this.gameService)
+    //console.log(this.tribesService)
+    //console.log(this.mapService)
   }
 }

@@ -1,6 +1,8 @@
 <div>Mapa</div>
 <div class="map" >
-  <div class="field" *ngFor="let field of fields">
-    {{ 'id: ' + field.id + ', ' + field.x + ',' + field.y }}
+  <div class="field" [ngClass]="{'field-water': field.water}" *ngFor="let field of fields">
+    {{ field.settled !== -1 ? field.settled : ''}}
+    <br />
+    {{ field.x + ',' + field.y }}
   </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IField } from '../map.service'
+import { IField } from '../core/map.service'
 
 @Component({
   selector: 'app-map',
@@ -14,7 +14,7 @@ export class MapComponent implements OnInit {
   waterClassStyle = "field-water";
 
   ngOnInit(): void {
-    console.log(this.fields)
+    // console.log(this.fields)
   }
 
 }

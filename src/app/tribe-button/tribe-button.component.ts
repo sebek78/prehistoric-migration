@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {ITribe } from '../tribes.service'
+import {ITribe } from '../core/tribes.service'
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({

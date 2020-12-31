@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TribesService } from '../tribes.service'
-import { GameService } from '../game.service'
+import { TribesService } from '../core/tribes.service'
+import { GameService } from '../core/game.service'
 import { Router } from '@angular/router'
 
 @Component({
