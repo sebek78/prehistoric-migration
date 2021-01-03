@@ -1,8 +1,7 @@
-<div>Mapa</div>
 <div class="map" >
   <div class="field" [ngClass]="{'field-water': field.water}" *ngFor="let field of fields">
-    {{ field.settled !== -1 ? field.settled : ''}}
-    <br />
-    {{ field.x + ',' + field.y }}
+    <div *ngFor="let counter of checkBands(field.x,field.y)">
+      <app-counter [counter]='counter'></app-counter>
+    </div>
   </div>
 </div>

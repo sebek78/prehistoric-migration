@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IField } from '../core/map.service'
+import { MapService} from '../core/map.service'
+import { BandsService } from '../core/bands.service'
 
 @Component({
   selector: 'app-map',
@@ -7,15 +8,19 @@ import { IField } from '../core/map.service'
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  @Input() fields: Array<IField>;
-
-  constructor() { }
+  constructor(
+    private mapService: MapService,
+    private bandService: BandsService,
+  ) { }
 
   waterClassStyle = "field-water";
+  fields = this.mapService.fields
+  bands = this.bandService.bands;
 
-  ngOnInit(): void {
-    // console.log(this.fields)
+  ngOnInit(): void {}
+
+  checkBands(x:number, y:number){
+    return this.bandService.getBandsByPosition(x,y);
   }
-
 }
 

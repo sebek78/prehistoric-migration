@@ -71,4 +71,8 @@ export class TribesService {
     }));
     this.list[index].controledByPlayer = true
   }
+
+  getTribeColor(index:number){
+    return this.defaultTribes[index].color;
+  }
 }

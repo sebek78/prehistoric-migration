@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { RngService } from '../core/rng.service'
+import { BandsService } from '../core/bands.service'
+import { clone } from 'ramda'
 
 export interface IField {
   x: number,
   y: number,
   id: number,
   water: boolean,
-  settled: number,
+  settled?: number,
 }
 
 @Injectable({
@@ -20,7 +22,8 @@ export class MapService {
   WATER_FIELDS = 6;
 
   constructor(
-    private rngService: RngService
+    private rngService: RngService,
+    private bandsService: BandsService
   ) { 
     this.createMap()
   }
@@ -41,6 +44,7 @@ export class MapService {
     }
     this.randomizeWaterFields();
     this.randomizeStartingPosition();
+    this.createFirstBands();
   }
 
   findFieldIndex(x: number, y: number) {
@@ -128,10 +132,10 @@ export class MapService {
       return min > MIN_VALID_DISTANCE;
     }
 
-    let draw = 4
-    while (draw > 0) {
+    let draw = 3
+    while (draw >= 0) {
       let { field, index } = drawField();
-      if(draw === 4 && !field.water ) {
+      if(draw === 3 && !field.water ) {
         this.fields[index] = {...field, settled: draw};
         draw--;
       } else {
@@ -145,5 +149,21 @@ export class MapService {
         }
       }
     }
+  }
+
+  createFirstBands(){
+    this.fields = this.fields.map(field=>{
+      const updatedField = clone(field);
+      if(updatedField.settled !== -1) {
+        this.bandsService.createBand(
+          updatedField.settled,
+          this.bandsService.INIT_GAME_BANDS_SIZE,
+          updatedField.x,
+          updatedField.y
+        )
+      }
+      delete updatedField.settled;
+      return updatedField
+    })
   }
 }

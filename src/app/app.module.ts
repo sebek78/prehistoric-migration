@@ -10,6 +10,7 @@ import { TribeButtonComponent } from './tribe-button/tribe-button.component';
 import { MenuButtonComponent } from './menu-button/menu-button.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ManualComponent } from './manual/manual.component';
+import { CounterComponent } from './counter/counter.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ManualComponent } from './manual/manual.component';
     TribeButtonComponent,
     MenuButtonComponent,
     NotFoundComponent,
-    ManualComponent
+    ManualComponent,
+    CounterComponent
   ],
   imports: [
     BrowserModule,
