@@ -1,39 +1,48 @@
 <app-menu-button [innerText]="'Menu główne'" routerLink="/"></app-menu-button>
-<app-menu-button 
+<app-menu-button
     *ngIf="showResume"
-    routerLink="/game" 
+    routerLink="/game"
     [innerText]="'Powrót do gry'"
 ></app-menu-button>
-<h1>Prehistoryczna migracja</h1>
-<h2>Zasady gry</h2>
-<h3>- Wprowadzenie -</h3>
-<p>Prehistroyczna migracja jest strategiczną grą turową, to znaczy, że Twoje akcje 
-    i akcje przeciwników wykonują się po kolei dla każdego plemienia. Gra posiada 
+<h1 class="title">Prehistoryczna migracja</h1>
+<h2 class="subtitle">Zasady gry</h2>
+<h3 class="section-title">- Wprowadzenie -</h3>
+<p>Prehistroyczna migracja jest strategiczną grą turową, to znaczy, że Twoje akcje
+    i akcje przeciwników wykonują się po kolei dla każdego plemienia. Gra posiada
     tylko tryb dla pojedynczego gracza, czyli rozwój innych plemion jest sterowany
     przez grę. Gra ma połączony styl gry planszowej z grą karcianą.
 </p>
 <p>
-    W tej grze występują cztery prehistoryczne plemiona. Kierujesz jednym z nich. 
-    Plemiona posiadają własną nazwę i identyfikujący je kolor. Oprócz tego nie 
+    W tej grze występują cztery prehistoryczne plemiona. Kierujesz jednym z nich.
+    Plemiona posiadają własną nazwę i identyfikujący je kolor. Oprócz tego nie
     różnią się niczym między sobą.
 </p>
-<h3>- Warunki zwycięstwa -</h3>
+<h3 class="section-title">- Warunki zwycięstwa -</h3>
 <p>
-    Aby zwyciężyć musisz <strong>zasiedlić 16 lub więcej prowincji</strong> 
+    Aby zwyciężyć musisz <strong>zasiedlić 16 lub więcej prowincji</strong>
     i rozwinąć technologię do ery neolitycznej. Czyli trzeba odkryć<strong>
     co najmniej dwa wynalazki w każdej z 11 kategorii</strong>.
 </p>
-<h3>- Podstawowe pojęcia -</h3>
-<h4>Mapa</h4>
+<h3 class="section-title">- Podstawowe pojęcia -</h3>
+<h4 class="definition">Mapa</h4>
 <p>
-    Mapa jest podzielona na 30 prowincji (kolor jasnozielony) oraz 6 pól morskich 
+    Mapa jest podzielona na 30 prowincji (kolor jasnozielony) oraz 6 pól morskich
     (oznaczonych kolorem niebieskim). Pola morskie są niedostępne dla plemion.
+    Na mapie znajdują się pionki w kolorze plemion. Liczba na pionku pokazuje,
+    że na tym polu jest jedna lub więcej band plemienia.
 </p>
-<h4>Wynalazki</h4>
-<h4>Plemienne oddziały</h4>
-<h4>Zasoby na starcie</h4>
-<h3>- Tura gry -</h3>
-<h4>Nowe zasoby</h4>
-<h4>Migracja</h4>
-<h4>Wydarzenia</h4>
-<h4>Intrakcje między plemionami</h4>
+<h4 class="definition">Bandy</h4>
+<p>
+  Banda jest grupą kilkunastu rodzin z jednego plemienia i liczy około 100 ludzi.
+  Jedna banda jest pojedynczą jednostką. W grze nie ma limitu jednostek dla
+  pojedynczego pola mapy. Wystarczy jedna banda na danym polu, aby pole to
+  liczyło się jako zasiedlone do warunków zwycięstwa.
+</p>
+<h4 class="definition">Wynalazki</h4>
+<h4 class="definition">Plemienne oddziały</h4>
+<h4 class="definition">Zasoby na starcie</h4>
+<h3 class="section-title">- Tura gry -</h3>
+<h4 class="definition">Nowe zasoby</h4>
+<h4 class="definition">Migracja</h4>
+<h4 class="definition">Wydarzenia</h4>
+<h4 class="definition">Intrakcje między plemionami</h4>
