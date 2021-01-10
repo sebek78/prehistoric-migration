@@ -1,4 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable  } from '@angular/core';
+import { clone } from 'ramda'
+import { IField } from './map.service'
 
 export interface IBand {
   ownerId: number,
@@ -31,4 +33,25 @@ export class BandsService {
     return this.bands.filter(band=>band.x===x && band.y===y)
   }
 
+  getNumberOfSettledFieldsById(id:number) {
+    return this.bands.reduce((num, band) => {
+      return band.ownerId === id ? num += 1 : num
+    }, 0);
+  }
+
+  createFirstBands(mapFields: IField[]){
+    mapFields = mapFields.map(field=>{
+      const updatedField = clone(field);
+      if(updatedField.settled !== -1) {
+        this.createBand(
+          updatedField.settled,
+          this.INIT_GAME_BANDS_SIZE,
+          updatedField.x,
+          updatedField.y
+        )
+      }
+      delete updatedField.settled;
+      return updatedField
+    })
+  }
 }

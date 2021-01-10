@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RngService } from '../core/rng.service'
 import { BandsService } from '../core/bands.service'
-import { clone } from 'ramda'
 
 export interface IField {
   x: number,
@@ -24,7 +23,7 @@ export class MapService {
   constructor(
     private rngService: RngService,
     private bandsService: BandsService
-  ) { 
+  ) {
     this.createMap()
   }
 
@@ -44,7 +43,6 @@ export class MapService {
     }
     this.randomizeWaterFields();
     this.randomizeStartingPosition();
-    this.createFirstBands();
   }
 
   findFieldIndex(x: number, y: number) {
@@ -65,7 +63,7 @@ export class MapService {
     let fieldsToDraw = 6;
 
     // get external fields
-    const externalFields = this.fields.filter(field=> 
+    const externalFields = this.fields.filter(field=>
       field.y === 0 || //top
       field.y === this.MAP_HEIGHT -1 || //bottom
       field.x === 0 && field.y > 0 && field.y < this.MAP_HEIGHT -1 || //left
@@ -76,7 +74,7 @@ export class MapService {
       const index = this.rngService.draw(externalFields.length);
       const field = externalFields[index];
       if( // corner side fields
-        // top left 
+        // top left
         field.x === 1 && field.y === 0 && !field.water && !this.isWaterField(0,1) ||
         field.x === 0 && field.y === 1 && !field.water && !this.isWaterField(1,0) ||
         // top right
@@ -87,12 +85,12 @@ export class MapService {
         field.x === 1 && field.y === this.MAP_HEIGHT - 1 && !field.water && !this.isWaterField(1,this.MAP_HEIGHT -1) ||
         // bottom right
         field.x === this.MAP_WIDTH - 1 && field.y === this.MAP_HEIGHT -2 && !field.water && !this.isWaterField(this.MAP_WIDTH - 2, this.MAP_HEIGHT - 1) ||
-        field.x === this.MAP_WIDTH - 2 && field.y === this.MAP_HEIGHT -1 && !field.water && !this.isWaterField(this.MAP_WIDTH - 1, this.MAP_HEIGHT - 2)  
+        field.x === this.MAP_WIDTH - 2 && field.y === this.MAP_HEIGHT -1 && !field.water && !this.isWaterField(this.MAP_WIDTH - 1, this.MAP_HEIGHT - 2)
       ) {
         externalFields[index].water = true
         this.setWaterField(field.x,field.y)
         fieldsToDraw--;
-      } 
+      }
       if (( // corner fields and other external fields
         field.x === 0 && field.y === 0 ||
         field.x === this.MAP_WIDTH -1 && field.y === 0 ||
@@ -101,12 +99,12 @@ export class MapService {
         field.x > 1 && field.x < this.MAP_WIDTH - 3 && field.y === 0 ||
         field.x > 1 && field.x < this.MAP_WIDTH - 3 && field.y === this.MAP_HEIGHT -1 ||
         field.y > 1 && field.y < this.MAP_HEIGHT -3 && field.x === 0 ||
-        field.y > 1 && field.y < this.MAP_HEIGHT -3 && field.x === this.MAP_WIDTH -1 
+        field.y > 1 && field.y < this.MAP_HEIGHT -3 && field.x === this.MAP_WIDTH -1
       ) && !field.water) {
         externalFields[index].water = true
         this.setWaterField(field.x,field.y)
         fieldsToDraw--;
-      } 
+      }
     }
   }
 
@@ -149,21 +147,5 @@ export class MapService {
         }
       }
     }
-  }
-
-  createFirstBands(){
-    this.fields = this.fields.map(field=>{
-      const updatedField = clone(field);
-      if(updatedField.settled !== -1) {
-        this.bandsService.createBand(
-          updatedField.settled,
-          this.bandsService.INIT_GAME_BANDS_SIZE,
-          updatedField.x,
-          updatedField.y
-        )
-      }
-      delete updatedField.settled;
-      return updatedField
-    })
   }
 }

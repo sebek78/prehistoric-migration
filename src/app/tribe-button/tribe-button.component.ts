@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {ITribe } from '../core/tribes.service'
+import { Tribe } from '../core/tribe'
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -8,7 +8,7 @@ import { Output, EventEmitter } from '@angular/core';
   styleUrls: ['./tribe-button.component.scss']
 })
 export class TribeButtonComponent implements OnInit {
-  @Input() tribe: ITribe;
+  @Input() tribe: Tribe;
   @Input() i: number;
   @Input() checked: boolean;
   @Output() selectTribe = new EventEmitter();

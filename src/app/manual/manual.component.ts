@@ -12,11 +12,9 @@ export class ManualComponent implements OnInit {
     private gameService: GameService,
   ) { }
 
-  showResume: boolean;
+  showReturnButton: boolean;
 
   ngOnInit(): void {
-    console.log(this.gameService)
-    this.showResume = this.gameService.isRunning
+    this.showReturnButton = this.gameService.isRunning
   }
-
 }

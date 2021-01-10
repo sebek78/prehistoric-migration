@@ -9,7 +9,7 @@ import { Router } from '@angular/router'
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
-  constructor( 
+  constructor(
     private tribesService: TribesService,
     private gameService: GameService,
     private router: Router
@@ -30,7 +30,7 @@ export class HomepageComponent implements OnInit {
   }
   handleClose(){
     this.toggleDialog();
-  } 
+  }
 
   selectedInput(i: number){
     return this.selectedTribe === i;
@@ -38,8 +38,7 @@ export class HomepageComponent implements OnInit {
 
   handleStartGame(){
     this.showEntryDialog = false;
-    this.gameService.isRunning = true;
-    this.tribesService.setPlayer(this.selectedTribe)
+    this.gameService.startGame(this.selectedTribe);
   }
   onSelectTribe(i: number){
     this.selectedTribe = i;

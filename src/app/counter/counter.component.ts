@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import  { IBand } from '../core/bands.service'
-import { TribesService } from '../core/tribes.service'
+import { Tribe } from '../core/tribe'
 
 @Component({
   selector: 'app-counter',
@@ -10,13 +10,11 @@ import { TribesService } from '../core/tribes.service'
 export class CounterComponent implements OnInit {
   @Input() counter: IBand;
 
-  constructor(
-    private tribeService: TribesService
-  ) {}
+  constructor() {}
 
   color: string;
 
   ngOnInit(): void {
-    this.color = this.tribeService.getTribeColor(this.counter.ownerId)
+    this.color = Tribe.getTribeColor(this.counter.ownerId)
   }
 }

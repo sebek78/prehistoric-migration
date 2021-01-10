@@ -6,9 +6,9 @@ import { ManualComponent } from './manual/manual.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent },
   { path: 'game', component: GameViewComponent },
   { path: 'manual', component: ManualComponent},
+  { path: '', component: HomepageComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

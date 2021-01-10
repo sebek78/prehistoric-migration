@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../core/game.service'
-import { TribesService } from '../core/tribes.service' 
+import { TribesService } from '../core/tribes.service'
 import { MapService} from '../core/map.service'
 
 @Component({
