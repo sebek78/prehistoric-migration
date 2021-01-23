@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Tribe } from '../core/tribe'
+import { Tribe } from '../../core/tribe'
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({

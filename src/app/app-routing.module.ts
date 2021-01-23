@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GameViewComponent } from './game-view/game-view.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { ManualComponent } from './manual/manual.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { ManualComponent } from './homepage/manual/manual.component';
+import { NotFoundComponent } from './homepage/not-found/not-found.component';
 
 const routes: Routes = [
   { path: 'game', component: GameViewComponent },

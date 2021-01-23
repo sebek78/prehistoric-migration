@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import  { IBand } from '../core/bands.service'
-import { Tribe } from '../core/tribe'
+import  { IBand } from '../../core/bands.service'
+import { Tribe } from '../../core/tribe'
 
 @Component({
   selector: 'app-counter',

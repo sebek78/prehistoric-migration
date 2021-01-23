@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MapService} from '../core/map.service'
-import { BandsService } from '../core/bands.service'
+import { MapService} from '../../core/map.service'
+import { BandsService } from '../../core/bands.service'
 
 @Component({
   selector: 'app-map',

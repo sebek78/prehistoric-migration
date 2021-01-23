@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TribesService } from '../core/tribes.service'
+import { TribesService } from './tribes.service'
 import { BandsService } from './bands.service';
 import { MapService } from './map.service'
 

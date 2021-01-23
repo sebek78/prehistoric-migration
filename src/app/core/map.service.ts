@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RngService } from '../core/rng.service'
-import { BandsService } from '../core/bands.service'
+import { RngService } from './rng.service'
+import { BandsService } from './bands.service'
 
 export interface IField {
   x: number,
