@@ -6,7 +6,7 @@ import { GameService } from './game.service';
 import { MapService } from './map.service';
 import { RngService } from './rng.service';
 import { TribesService } from './tribes.service';
-import { AdvancesService } from './advances.service';
+import { AdvancesService } from './advances/advances.service';
 
 @NgModule({
   declarations: [],
