@@ -1,0 +1,12 @@
+<label class="tribe-button" [ngStyle]="{'border-color': tribe.color}">
+    <div class="tribe-button__square" [ngStyle]="{'background-color': tribe.color}"></div>
+    <p class="tribe-button__label-text">{{tribe.name}}</p>
+    <input
+        id="tribe.name"
+        name="tribe"
+        class="tribe-button__input"
+        type="radio"
+        (change)="selectTribe.emit()"
+        [checked]="checked"
+    >
+</label>

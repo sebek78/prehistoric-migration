@@ -1,0 +1,48 @@
+<main>
+    <header class="header">
+        <h1 class=""><img class="header__title" src="assets/logo-premig.svg" alt="Prehistoryczna migracja logo" /></h1>
+        <h2 class="header__subtitle">Prowadź prehistoryczne plemię</h2>
+        <h3 class="header__warning">Gra jeszcze nie grywalna</h3>
+    </header>
+    <div class="wrapper">
+        <ul class="featuresList">
+            <li>Turowa gra strategiczna</li>
+            <li>Dla pojedynczego gracza</li>
+            <li>Styl gry planszowej i karcianej</li>
+            <li>Wysoka losowość</li>
+            <li>Prehistoryczna era</li>
+        </ul>
+        <nav class="buttons">
+            <app-menu-button (click)="toggleDialog()" [innerText]="innerText"></app-menu-button>
+            <app-menu-button routerLink="/manual" [innerText]="'Zasady gry'"></app-menu-button>
+        </nav>
+        <div *ngIf="showEntryDialog">
+            <div class="entry-dialog" (click)="handleClose()"></div>
+            <div class="entry-dialog__box">
+                <p class="text">
+                    Rozpoczynasz rozwój i ekspansję prehistorycznego plemienia. Aby zwyciężyć
+                    musisz <strong>zasiedlić 16 lub więcej prowincji</strong>
+                    i rozwinąć technologię do ery neolitycznej. Czyli trzeba odkryć<strong>
+                        co najmniej dwa wynalazki w każdej z 11 kategorii</strong>.
+                </p>
+                <p class="text">Wybierz plemię:</p>
+                <div class="tribes">
+                    <app-tribe-button 
+                        *ngFor="let tribe of defaultTribes; let i = index" 
+                        [tribe]="tribe" 
+                        [i]="i"
+                        (selectTribe)="onSelectTribe(i)"
+                        [checked]="selectedInput(i)"
+                    ></app-tribe-button>
+                </div>
+                <div class="buttons-tribes">
+                    <app-menu-button (click)="toggleDialog()" [innerText]="'Menu główne'"></app-menu-button>
+                    <app-menu-button (click)="handleStartGame()" [innerText]="'Graj'" routerLink="/game"></app-menu-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <a class="link" href="http://mybytes.pl">mybytes.pl</a>
+</footer>
