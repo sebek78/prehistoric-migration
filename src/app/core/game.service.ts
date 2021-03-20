@@ -3,6 +3,7 @@ import { TribesService } from './tribes.service'
 import { BandsService } from './bands.service';
 import { MapService } from './map.service'
 import { Tribe } from './tribe';
+import { LocalStorageService } from './local-storage.service';
 
 export interface WinningCondition {
   id: number;
@@ -15,21 +16,48 @@ export interface WinningCondition {
   providedIn: 'root'
 })
 export class GameService {
-  constructor(
-    private tribesService: TribesService,
-    private bandsService: BandsService,
-    private mapService: MapService,
-  ) { }
+  savedGameSarviceData: any;
 
   isRunning: boolean = false;
   turn: number = 0;
   winningConditions: WinningCondition[][] = [];
 
+  constructor(
+    private tribesService: TribesService,
+    private bandsService: BandsService,
+    private mapService: MapService,
+    private localStorageService: LocalStorageService,
+  ) {
+      this.savedGameSarviceData = localStorageService.getGameServiceSavedData()
+      this.isRunning = this.savedGameSarviceData?.isRunning || false;
+      this.turn  = this.savedGameSarviceData?.turn || 0;
+      this.winningConditions = this.savedGameSarviceData?.winningConditions || []
+  }
+
   startGame(selectedTribeId: number) {
     this.isRunning = true;
     this.tribesService.setPlayer(selectedTribeId)
-    this.bandsService.createFirstBands(this.mapService.fields);
+    this.bandsService.createFirstBands();
     this.winningConditions.push(this.checkWinningConditions())
+    this.saveGame();
+  }
+
+  stopGame(){
+    this.isRunning = false
+  }
+
+  saveGame(){
+    const testData={
+      game:{
+        isRunning: this.isRunning,
+        turn: this.turn,
+        winningConditions: this.winningConditions,
+      },
+      tribes: this.tribesService.getTribes(),
+      map: this.mapService.getMap(),
+      bands: this.bandsService.getBands(),
+    };
+    this.localStorageService.saveGame(JSON.stringify(testData))
   }
 
   checkWinningConditions(): WinningCondition[] {
