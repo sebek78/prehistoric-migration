@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Plemię</th>
+      <th>Prowincje</th>
+      <th>Proges</th>
+      <th>Wynalazki</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr class="" *ngFor="let result of lastResult">
+    <td>{{ tribeNames[result.id] }}</td>
+    <td>{{ result.settledFields }}</td>
+    <td>{{ result.progress }}</td>
+    <td>{{ result.advancesSum }}</td>
+  </tr>
+  </tbody>
+</table>

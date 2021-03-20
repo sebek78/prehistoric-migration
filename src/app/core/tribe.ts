@@ -1,5 +1,4 @@
 import Advance from './advances/advance'
-import AdvancesManager from './advances/advances-manager'
 import { AdvanceTypes } from './advances/initAdvancesList'
 
 const defaultTribes = [
@@ -28,14 +27,16 @@ export class Tribe {
   id: number;
   advances: Advance[];
   undiscoveredAdvances: Advance[];
+  discoveredAdvances: Advance[];
 
-  constructor(index: number) {
+  constructor(index: number, undiscoveredAdvances: Advance[]) {
     this.name = defaultTribes[index].name;
     this.color = defaultTribes[index].color;
     this.controledByPlayer = false;
     this.id = index;
     this.advances = [];
-    this.undiscoveredAdvances = AdvancesManager.createAdvancesList();
+    this.undiscoveredAdvances = undiscoveredAdvances;
+    this.discoveredAdvances = [];
   }
 
   static getTribeColor(index: number){
@@ -53,6 +54,11 @@ export class Tribe {
       advancesNumber.push(thisTypeNumber)
     }
 
-    return advancesNumber.every(num => num >= 2)
+    const hasEachTwoTypesOfAdvances = advancesNumber.every(num => num >= 2)
+
+    return {
+      hasEachTwoTypesOfAdvances,
+      advancesNumber,
+    }
   }
 }

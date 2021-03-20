@@ -1,4 +1,11 @@
 <app-menu-button [innerText]="'Menu główne'" routerLink="/"></app-menu-button>
 <app-menu-button routerLink="/manual" [innerText]="'Zasady gry'"></app-menu-button>
 
-<app-map>
+<div class="flex">
+  <app-map></app-map>
+  <app-progress-list
+    [winningCondition]="winningConditions"
+    [tribeNames]="tribeNames"
+    >
+  </app-progress-list>
+</div>

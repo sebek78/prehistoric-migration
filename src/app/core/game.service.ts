@@ -4,11 +4,11 @@ import { BandsService } from './bands.service';
 import { MapService } from './map.service'
 import { Tribe } from './tribe';
 
-interface WinningCondition {
+export interface WinningCondition {
   id: number;
   settledFields: number;
-  advances: boolean;
-  turn: number;
+  progress: boolean;
+  advancesSum: number;
 }
 
 @Injectable({
@@ -30,7 +30,6 @@ export class GameService {
     this.tribesService.setPlayer(selectedTribeId)
     this.bandsService.createFirstBands(this.mapService.fields);
     this.winningConditions.push(this.checkWinningConditions())
-    console.log(this.winningConditions)
   }
 
   checkWinningConditions(): WinningCondition[] {
@@ -38,12 +37,14 @@ export class GameService {
 
     return players.map((player: Tribe): WinningCondition => {
       const settledFields = this.bandsService.getNumberOfSettledFieldsById(player.id)
-      const hasEachTwoTypesOfAdvances = player.checkAdvancesWinningCondition()
+      const { hasEachTwoTypesOfAdvances, advancesNumber } = player.checkAdvancesWinningCondition()
+      const advancesSum = advancesNumber.reduce((sum, currentValue) => (sum + currentValue),0);
+
       return {
         id: player.id,
         settledFields,
-        advances: hasEachTwoTypesOfAdvances,
-        turn: this.turn,
+        progress: hasEachTwoTypesOfAdvances,
+        advancesSum,
       }
     })
   }

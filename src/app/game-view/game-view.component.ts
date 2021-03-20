@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GameService } from '../core/game.service'
+import { GameService, WinningCondition } from '../core/game.service'
 import { TribesService } from '../core/tribes.service'
-import { MapService} from '../core/map.service'
+import { MapService, IField} from '../core/map.service'
 
 @Component({
   selector: 'app-game-view',
@@ -10,17 +10,19 @@ import { MapService} from '../core/map.service'
 })
 export class GameViewComponent implements OnInit {
 
+  public fields: IField[] = [];
+  public winningConditions: WinningCondition[][] = [];
+  public tribeNames: string[] = [];
+
   constructor(
     private gameService: GameService,
     private tribesService: TribesService,
     private mapService: MapService
   ) { }
 
-  fields = this.mapService.fields
-
   ngOnInit(): void {
-    //console.log(this.gameService)
-    //console.log(this.tribesService)
-    //console.log(this.mapService)
+    this.fields = this.mapService.fields
+    this.winningConditions = this.gameService.winningConditions
+    this.tribeNames = this.tribesService.getTribeNames()
   }
 }
