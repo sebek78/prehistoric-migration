@@ -20,7 +20,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/prehistoric-migration",
+            "outputPath": "dist/",
+            "baseHref": "/test/",
+            "deployUrl": "/test/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
