@@ -1,18 +1,23 @@
-<table>
-  <thead>
-    <tr>
+<table class="table">
+  <thead class="table__header">
+    <tr >
       <th>Plemię</th>
       <th>Prowincje</th>
-      <th>Proges</th>
       <th>Wynalazki</th>
+      <th>Neolit</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table__body">
   <tr class="" *ngFor="let result of lastResult">
-    <td>{{ tribeNames[result.id] }}</td>
+    <td>
+      <div class="cell-flex">
+        <span class="color-box" [ngStyle]="{'background-color': getTribeColor(result.id)}"></span>
+        <span>{{ tribeNames[result.id] }}</span>
+      </div>
+    </td>
     <td>{{ result.settledFields }}</td>
-    <td>{{ result.progress }}</td>
     <td>{{ result.advancesSum }}</td>
+    <td>{{ result.progress ? 'TAK' : 'NIE' }}</td>
   </tr>
   </tbody>
 </table>

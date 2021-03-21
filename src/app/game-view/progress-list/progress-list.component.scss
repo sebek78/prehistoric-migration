@@ -1,0 +1,41 @@
+@import "../../../sass/variables";
+
+.table {
+  border: 3px solid $primaryDark;
+  border-collapse: collapse;
+}
+.table__header {
+  font-size: 20px;
+  text-align: center;
+  background-color: $bgColorLight;
+}
+.table__header th {
+  border: 1px solid $primaryDark;
+  padding: 8px;
+}
+.table__body {
+  background-color: $bgColorLighter;
+  font-size: 18px;
+}
+.table__body tr {
+  border: 1px solid $primaryDark;
+}
+.table__body td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid $primaryDark;
+}
+.table tbody:first-child {
+  text-align: left;
+}
+.cell-flex {
+  display: flex;
+  align-items: center;
+}
+.color-box {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-right: 8px;
+}

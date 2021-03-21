@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WinningCondition } from 'src/app/core/game.service';
+import { Tribe } from '../../core/tribe'
 
 @Component({
   selector: 'app-progress-list',
@@ -17,5 +18,9 @@ export class ProgressListComponent implements OnInit {
 
   ngOnInit(): void {
     this.lastResult = this.winningCondition[this.winningCondition.length-1]
+  }
+
+  getTribeColor(index: number) {
+    return Tribe.getTribeColor(index)
   }
 }
