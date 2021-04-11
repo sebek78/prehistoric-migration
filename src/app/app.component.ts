@@ -19,7 +19,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     this.path = document.body.dataset.path;
-    console.log(this.path);
     this.localStorage.loadGame()
   }
 }

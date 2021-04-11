@@ -3,20 +3,20 @@ import { AdvanceTypes } from './advances/initAdvancesList'
 
 const defaultTribes = [
   {
-    name: "Tygrysy",
-    color: "#ff3300",
+    name: "Tygrysy 300",
+    color: "#ff3300",  //orange
   },
   {
-    name: "Niedźwiedzie",
-    color: "#262626",
+    name: "Niedźwiedzie 26",
+    color: "#262626", // graphite
   },
   {
-    name: "Wilki",
-    color: "#737373",
+    name: "Wilki 73",
+    color: "#737373", //grey
   },
   {
-    name: "Mamuty",
-    color: "#4d2600",
+    name: "Mamuty 600",
+    color: "#4d2600", //brown
   },
 ];
 
@@ -39,9 +39,6 @@ export class Tribe {
     this.discoveredAdvances = [];
   }
 
-  static getTribeColor(index: number){
-    return defaultTribes[index].color;
-  }
 
   checkAdvancesWinningCondition () {
     const advancesNumber: number[] = [];

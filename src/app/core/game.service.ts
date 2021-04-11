@@ -30,13 +30,14 @@ export class GameService {
   ) {
       this.savedGameSarviceData = localStorageService.getGameServiceSavedData()
       this.isRunning = this.savedGameSarviceData?.isRunning || false;
-      this.turn  = this.savedGameSarviceData?.turn || 0;
+      this.turn = this.savedGameSarviceData?.turn || 0;
       this.winningConditions = this.savedGameSarviceData?.winningConditions || []
   }
 
   startGame(selectedTribeId: number) {
     this.isRunning = true;
     this.tribesService.setPlayer(selectedTribeId)
+    this.tribesService.shuffleTribes()
     this.bandsService.createFirstBands();
     this.winningConditions.push(this.checkWinningConditions())
     this.saveGame();

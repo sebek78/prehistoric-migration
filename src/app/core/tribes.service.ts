@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AdvancesService } from './advances/advances.service';
 import { LocalStorageService } from './local-storage.service';
+import { RngService } from './rng.service';
 import { Tribe } from './tribe'
 
 export const MAX_PLAYERS = 4;
@@ -15,6 +16,7 @@ export class TribesService {
   constructor(
     private localStorageService: LocalStorageService,
     private advancesService: AdvancesService,
+    private rngService: RngService
   ) {
     const tribeServiceSavedData = this.localStorageService.getTribesServiceSavedData();
     this.list = tribeServiceSavedData ? tribeServiceSavedData : this.createTribes();
@@ -38,11 +40,19 @@ export class TribesService {
     return this.list[index];
   }
 
-  getTribeNames(){
-    return this.list.map(tribe=>tribe.name)
+  getTribeColor(id: number) {
+    return this.list.find(tribe=>tribe.id === id)?.color || 'red'
+  }
+
+  getTribeName(id: number){
+    return this.list.find(tribe=>tribe.id === id)?.name || '?'
   }
 
   setPlayer(index: number){
     this.list[index].controledByPlayer = true
+  }
+
+  shuffleTribes(){
+    this.list = this.rngService.shuffleTribes(this.list)
   }
 }
