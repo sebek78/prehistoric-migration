@@ -13,6 +13,7 @@ export class GameViewComponent implements OnInit {
   public fields: IField[] = [];
   public winningConditions: WinningCondition[][] = [];
   public tribeNames: string[] = [];
+  public turn: number;
 
   constructor(
     private gameService: GameService,
@@ -24,5 +25,6 @@ export class GameViewComponent implements OnInit {
     this.fields = this.mapService.fields
     this.winningConditions = this.gameService.winningConditions
     this.tribeNames = this.tribesService.getTribeNames()
+    this.turn = this.gameService.getTurn()
   }
 }

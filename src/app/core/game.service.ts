@@ -60,6 +60,10 @@ export class GameService {
     this.localStorageService.saveGame(JSON.stringify(testData))
   }
 
+  getTurn(): number {
+    return this.turn;
+  }
+
   checkWinningConditions(): WinningCondition[] {
     let players = this.tribesService.getTribes();
 

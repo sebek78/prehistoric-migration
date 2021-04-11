@@ -1,23 +1,26 @@
-<table class="table">
-  <thead class="table__header">
-    <tr >
-      <th>Plemię</th>
-      <th>Prowincje</th>
-      <th>Wynalazki</th>
-      <th>Neolit</th>
+<div class="wrapper">
+  <div class="time-label">{{'Rok ' + getYear() + ' p.n.e'}}</div>
+  <table class="table">
+    <thead class="table__header">
+      <tr >
+        <th>Plemię</th>
+        <th>Prowincje</th>
+        <th>Wynalazki</th>
+        <th>Neolit</th>
+      </tr>
+    </thead>
+    <tbody class="table__body">
+    <tr class="" *ngFor="let result of lastResult">
+      <td>
+        <div class="cell-flex">
+          <span class="color-box" [ngStyle]="{'background-color': getTribeColor(result.id)}"></span>
+          <span>{{ tribeNames[result.id] }}</span>
+        </div>
+      </td>
+      <td>{{ result.settledFields }}</td>
+      <td>{{ result.advancesSum }}</td>
+      <td>{{ result.progress ? 'TAK' : 'NIE' }}</td>
     </tr>
-  </thead>
-  <tbody class="table__body">
-  <tr class="" *ngFor="let result of lastResult">
-    <td>
-      <div class="cell-flex">
-        <span class="color-box" [ngStyle]="{'background-color': getTribeColor(result.id)}"></span>
-        <span>{{ tribeNames[result.id] }}</span>
-      </div>
-    </td>
-    <td>{{ result.settledFields }}</td>
-    <td>{{ result.advancesSum }}</td>
-    <td>{{ result.progress ? 'TAK' : 'NIE' }}</td>
-  </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>

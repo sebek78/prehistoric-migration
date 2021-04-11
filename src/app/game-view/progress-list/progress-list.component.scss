@@ -1,32 +1,45 @@
 @import "../../../sass/variables";
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: $bgColorLight;
+  padding: 20px;
+}
+.time-label {
+  padding: 8px 0;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
 .table {
   border: 3px solid $primaryDark;
   border-collapse: collapse;
-}
-.table__header {
-  font-size: 20px;
-  text-align: center;
-  background-color: $bgColorLight;
-}
-.table__header th {
-  border: 1px solid $primaryDark;
-  padding: 8px;
-}
-.table__body {
-  background-color: $bgColorLighter;
-  font-size: 18px;
-}
-.table__body tr {
-  border: 1px solid $primaryDark;
-}
-.table__body td {
-  padding: 8px;
-  text-align: center;
-  border: 1px solid $primaryDark;
-}
-.table tbody:first-child {
-  text-align: left;
+  &__header {
+    font-size: 20px;
+    text-align: center;
+    background-color: $bgColorLight;
+  }
+  &__header th {
+    border: 1px solid $primaryDark;
+    padding: 8px;
+  }
+  &__body {
+    background-color: $bgColorLighter;
+    font-size: 18px;
+  }
+  &__body tr {
+    border: 1px solid $primaryDark;
+  }
+  &__body td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid $primaryDark;
+  }
+
+  & tbody:first-child {
+    text-align: left;
+  }
 }
 .cell-flex {
   display: flex;
