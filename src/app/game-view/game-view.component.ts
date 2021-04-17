@@ -23,4 +23,8 @@ export class GameViewComponent implements OnInit {
     this.winningConditions = this.gameService.winningConditions
     this.turn = this.gameService.getTurn()
   }
+
+  handleNextTurn(){
+    this.gameService.nextTurn()
+  }
 }

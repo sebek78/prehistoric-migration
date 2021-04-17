@@ -1,21 +1,21 @@
 import Advance from './advances/advance'
 import { AdvanceTypes } from './advances/initAdvancesList'
 
-const defaultTribes = [
+export const defaultTribes = [
   {
-    name: "Tygrysy 300",
+    name: "Tygrysy",
     color: "#ff3300",  //orange
   },
   {
-    name: "Niedźwiedzie 26",
+    name: "Niedźwiedzie",
     color: "#262626", // graphite
   },
   {
-    name: "Wilki 73",
+    name: "Wilki",
     color: "#737373", //grey
   },
   {
-    name: "Mamuty 600",
+    name: "Mamuty",
     color: "#4d2600", //brown
   },
 ];
@@ -25,18 +25,17 @@ export class Tribe {
   color: string;
   controledByPlayer: boolean;
   id: number;
-  advances: Advance[];
+  advances: Advance[] = [];
   undiscoveredAdvances: Advance[];
-  discoveredAdvances: Advance[];
+  discoveredAdvances: Advance[] = [];
+  // newResources: Resource[] = [];
 
   constructor(index: number, undiscoveredAdvances: Advance[]) {
     this.name = defaultTribes[index].name;
     this.color = defaultTribes[index].color;
     this.controledByPlayer = false;
     this.id = index;
-    this.advances = [];
     this.undiscoveredAdvances = undiscoveredAdvances;
-    this.discoveredAdvances = [];
   }
 
 

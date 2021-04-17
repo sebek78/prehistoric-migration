@@ -2,9 +2,13 @@ import { Injectable } from '@angular/core';
 import { AdvancesService } from './advances/advances.service';
 import { LocalStorageService } from './local-storage.service';
 import { RngService } from './rng.service';
-import { Tribe } from './tribe'
+import { Tribe, defaultTribes } from './tribe'
 
-export const MAX_PLAYERS = 4;
+export const MAX_PLAYERS = defaultTribes.length;
+export interface IControlledStatus {
+  controlledByPlayer: boolean,
+  id: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +38,13 @@ export class TribesService {
       tribesList.push(tribe);
     }
     return tribesList
+  }
+
+  getIsControlledStatus(){
+    return this.list.map(tribe=>({
+      controlledByPlayer: tribe.controledByPlayer,
+      id: tribe.id
+    }))
   }
 
   getTribe(index: number) {
