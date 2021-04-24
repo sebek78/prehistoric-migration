@@ -7,7 +7,7 @@ export class AiActions {
   private EA: number = 0 // the end of the advance
   private hasAdvance: boolean = false;
 
-  public newResources(newCardsSet: IResource[]){
+  public newResourcesDecision(newCardsSet: IResource[]){
     const cards = this.firstCheck(clone(newCardsSet));
 
     let again = MAX_REROLL;

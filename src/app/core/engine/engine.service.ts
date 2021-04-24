@@ -4,7 +4,9 @@ import { RngService } from '../rng.service';
 import { TribesService, MAX_PLAYERS, IControlledStatus } from '../tribes.service';
 import { AiActions } from './aiActions';
 import { MIN_ROLLS, MAX_ROLLS,D10 } from './constants';
-import { Resources, IResource, initResourceTypes } from './resources'
+import { LoggerService } from './logger.service';
+import { Resources, IResource } from './resources'
+import { logTypes } from './log'
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +16,14 @@ export class EngineService {
   tribesStatus: IControlledStatus[];
   it: IterableIterator<number>;
   aiActions: AiActions;
+  currentTurn: number;
+  currentPlayerId: number;
 
   constructor(
     private tribesService: TribesService,
     private bandsService: BandsService,
     private rngService: RngService,
+    private loggerService: LoggerService
   ) {
     this.maxPlayers = MAX_PLAYERS
     this.it = this.makeIterator(MAX_PLAYERS)
@@ -38,14 +43,19 @@ export class EngineService {
   phaseLoop(aiAction:any, humanAction:any) {
     let index = 0; // current tribes array index
     while (index<this.maxPlayers) {
+      this.currentPlayerId = this.tribesStatus[index].id;
      if (!this.tribesStatus[index].controlledByPlayer) {
-        aiAction(this.tribesStatus[index].id)
+        aiAction()
         this.it.next()
       } else {
-        humanAction(this.tribesStatus[index].id,this.it)
+        humanAction(this.it)
       }
       index++
     }
+  }
+
+  setCurrentTurn( currentTurn: number){
+    this.currentTurn = currentTurn;
   }
 
   /* new Resources phase */
@@ -53,18 +63,19 @@ export class EngineService {
     this.phaseLoop(this.aiNewResuorces, this.playerNewResuorces)
   }
 
-  aiNewResuorces = (id:number) => {
-    console.log('AI action ', id)
-    let cards = this.drawNewResources(id)
-    cards = this.aiActions.newResources(cards)
-    console.log(cards)
-    // ready to process
+  aiNewResuorces = () => {
+    let cards = this.drawNewResources(this.currentPlayerId)
+    cards = this.aiActions.newResourcesDecision(cards)
+    const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
+    this.loggerService.addLog(logTypes.phase1,this.currentTurn, cardsLog)
+    this.tribesService.setNewResources(this.currentPlayerId, cards)
   }
 
-  playerNewResuorces = (id: number, it: IterableIterator<number>) => {
-    console.log('Human action ', id)
-    let cards = this.drawNewResources(id)
-    console.log(cards)
+  playerNewResuorces = (it: IterableIterator<number>) => {
+    console.log('Human action ', this.currentPlayerId)
+    let cards = this.drawNewResources(this.currentPlayerId)
+    const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
+    this.loggerService.addLog(logTypes.phase1,this.currentTurn, cardsLog)
     // process dialog
     it.next()
   }

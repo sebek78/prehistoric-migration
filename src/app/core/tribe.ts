@@ -1,5 +1,6 @@
 import Advance from './advances/advance'
 import { AdvanceTypes } from './advances/initAdvancesList'
+import { IResource } from './engine/resources'
 
 export const defaultTribes = [
   {
@@ -28,7 +29,7 @@ export class Tribe {
   advances: Advance[] = [];
   undiscoveredAdvances: Advance[];
   discoveredAdvances: Advance[] = [];
-  // newResources: Resource[] = [];
+  newResources: IResource[] = [];
 
   constructor(index: number, undiscoveredAdvances: Advance[]) {
     this.name = defaultTribes[index].name;

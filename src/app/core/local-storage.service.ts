@@ -45,4 +45,7 @@ export class LocalStorageService {
   getBandsServiceSavedData() {
     return this.savedGame?.bands
   }
+  getSavedLogs() {
+    return this.savedGame?.logs
+  }
 }

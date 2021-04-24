@@ -5,6 +5,7 @@ import { MapService } from './map.service'
 import { Tribe } from './tribe';
 import { LocalStorageService } from './local-storage.service';
 import { EngineService } from './engine/engine.service';
+import { LoggerService } from './engine/logger.service';
 
 export interface WinningCondition {
   id: number;
@@ -17,7 +18,7 @@ export interface WinningCondition {
   providedIn: 'root'
 })
 export class GameService {
-  savedGameSarviceData: any;
+  savedGameServiceData: any;
 
   isRunning: boolean = false;
   turn: number = 0;
@@ -28,12 +29,15 @@ export class GameService {
     private bandsService: BandsService,
     private mapService: MapService,
     private localStorageService: LocalStorageService,
-    private engine: EngineService
+    private engine: EngineService,
+    private loggerService: LoggerService,
   ) {
-      this.savedGameSarviceData = localStorageService.getGameServiceSavedData()
-      this.isRunning = this.savedGameSarviceData?.isRunning || false;
-      this.turn = this.savedGameSarviceData?.turn || 0;
-      this.winningConditions = this.savedGameSarviceData?.winningConditions || []
+      this.savedGameServiceData = localStorageService.getGameServiceSavedData()
+      this.isRunning = this.savedGameServiceData?.isRunning || false;
+      this.turn = this.savedGameServiceData?.turn || 0;
+      this.winningConditions = this.savedGameServiceData?.winningConditions || []
+      if (this.isRunning) this.engine.initControlledStatus()
+      if (this.savedGameServiceData?.logs) loggerService.setSavedLogs(this.savedGameServiceData.logs)
   }
 
   startGame(selectedTribeId: number) {
@@ -61,6 +65,7 @@ export class GameService {
       tribes: this.tribesService.getTribes(),
       map: this.mapService.getMap(),
       bands: this.bandsService.getBands(),
+      logs: this.loggerService.getLogs(),
     };
     this.localStorageService.saveGame(JSON.stringify(save))
   }
@@ -71,7 +76,9 @@ export class GameService {
 
   nextTurn(){
     this.turn +=1;
+    this.engine.setCurrentTurn(this.turn)
     this.engine.newResources();
+    console.log(this.loggerService.getLogs())
   }
 
   checkWinningConditions(): WinningCondition[] {

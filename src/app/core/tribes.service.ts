@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AdvancesService } from './advances/advances.service';
+import { IResource } from './engine/resources';
 import { LocalStorageService } from './local-storage.service';
 import { RngService } from './rng.service';
 import { Tribe, defaultTribes } from './tribe'
@@ -65,5 +66,10 @@ export class TribesService {
 
   shuffleTribes(){
     this.list = this.rngService.shuffleTribes(this.list)
+  }
+
+  setNewResources(id: number, newResources: IResource[]){
+    const index = this.list.findIndex(tribe=>tribe.id===id)
+    this.list[index].newResources = newResources;
   }
 }
