@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { BandsService } from '../bands.service';
 import { RngService } from '../rng.service';
 import { TribesService, MAX_PLAYERS, IControlledStatus } from '../tribes.service';
@@ -14,10 +15,12 @@ import { logTypes } from './log'
 export class EngineService {
   maxPlayers: number;
   tribesStatus: IControlledStatus[];
-  it: IterableIterator<number>;
   aiActions: AiActions;
   currentTurn: number;
-  currentPlayerId: number;
+  currentPlayerId: number = 0;
+  currentIndex: number = 0;
+  private messageSource = new BehaviorSubject(false);
+  newResourcesDialogStatus = this.messageSource.asObservable();
 
   constructor(
     private tribesService: TribesService,
@@ -26,7 +29,6 @@ export class EngineService {
     private loggerService: LoggerService
   ) {
     this.maxPlayers = MAX_PLAYERS
-    this.it = this.makeIterator(MAX_PLAYERS)
     this.aiActions  = new AiActions()
   }
 
@@ -34,23 +36,21 @@ export class EngineService {
     this.tribesStatus = this.tribesService.getIsControlledStatus()
   }
 
-  *makeIterator (MAX_PLAYERS:number) {
-    for (let i = 0; i < MAX_PLAYERS; i++) {
-     yield i;
+  phaseLoop() {
+    if (this.currentIndex >= MAX_PLAYERS) {
+      this.currentIndex = 0;
+      return;
+    } else {
+      this.currentPlayerId = this.tribesStatus[this.currentIndex].id;
     }
-  }
 
-  phaseLoop(aiAction:any, humanAction:any) {
-    let index = 0; // current tribes array index
-    while (index<this.maxPlayers) {
-      this.currentPlayerId = this.tribesStatus[index].id;
-     if (!this.tribesStatus[index].controlledByPlayer) {
-        aiAction()
-        this.it.next()
-      } else {
-        humanAction(this.it)
-      }
-      index++
+    if (!this.tribesStatus[this.currentIndex].controlledByPlayer) {
+      this.aiNewResuorces()
+      this.currentIndex += 1
+      this.phaseLoop()
+    } else {
+      this.playerNewResuorces()
+      this.currentIndex += 1
     }
   }
 
@@ -58,12 +58,17 @@ export class EngineService {
     this.currentTurn = currentTurn;
   }
 
+  closeNewResourcesDialog() {
+    this.messageSource.next(false)
+  }
+
   /* new Resources phase */
   newResources(){
-    this.phaseLoop(this.aiNewResuorces, this.playerNewResuorces)
+    this.phaseLoop()
   }
 
   aiNewResuorces = () => {
+    console.log('AI', this.currentPlayerId)
     let cards = this.drawNewResources(this.currentPlayerId)
     cards = this.aiActions.newResourcesDecision(cards)
     const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
@@ -71,13 +76,12 @@ export class EngineService {
     this.tribesService.setNewResources(this.currentPlayerId, cards)
   }
 
-  playerNewResuorces = (it: IterableIterator<number>) => {
-    console.log('Human action ', this.currentPlayerId)
+  playerNewResuorces = () => {
+    console.log('H', this.currentPlayerId)
     let cards = this.drawNewResources(this.currentPlayerId)
     const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
-    this.loggerService.addLog(logTypes.phase1,this.currentTurn, cardsLog)
-    // process dialog
-    it.next()
+    this.loggerService.addLog(logTypes.phase1,this.currentTurn, ' [ H ] ' + cardsLog)
+    this.messageSource.next(true)
   }
 
   drawNewResources(id: number) {
