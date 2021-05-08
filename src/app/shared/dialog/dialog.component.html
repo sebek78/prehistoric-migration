@@ -1,0 +1,5 @@
+<div *ngIf="open" class="dialog" (click)="close ? close() : undefined">
+  <div class="dialog__box">
+    <ng-content></ng-content>
+  </div>
+</div>

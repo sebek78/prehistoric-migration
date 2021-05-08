@@ -4,7 +4,6 @@
   box-sizing: border-box;
   padding: 6px 12px 6px 12px;
   margin: 8px;
-  min-width: 160px;
   width: max-content;
   border-radius: 4px;
   font-size: 18px;
@@ -20,4 +19,8 @@
   color: $linkColor;
   cursor: pointer;
   white-space: nowrap;
+}
+.disabled {
+  background-color: #bbb;
+  cursor: default;
 }

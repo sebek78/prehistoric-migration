@@ -37,7 +37,7 @@ export class HomepageComponent implements OnInit {
     }
   }
 
-  handleClose(){
+  handleClose = () => {
     this.toggleDialog();
   }
 

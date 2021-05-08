@@ -1,10 +1,10 @@
-import { IResource, initResourceTypes } from './resources'
+import { IResource, Resources } from './resources'
 import { MAX_REROLL } from './constants'
 import { clone } from 'ramda'
 
 export class AiActions {
-  private BA: number = 0 // the beginning of the advance
-  private EA: number = 0 // the end of the advance
+  private BA: number = 0 // the beginning of the advance, theory
+  private EA: number = 0 // the end of the advance, practice
   private hasAdvance: boolean = false;
 
   public newResourcesDecision(newCardsSet: IResource[]){
@@ -67,7 +67,7 @@ export class AiActions {
     if (cards[index].type === 'BA') this.BA--;
     if (cards[index].type === 'EA') this.EA--;
       const draw = Math.floor(Math.random() * 10)
-      cards[index] = {type: initResourceTypes[draw], rollAgain: false}
+      cards[index] = Resources.getNextCard(draw)
       if (draw===4) this.BA++;
       if (draw===5) this.EA++;
     }

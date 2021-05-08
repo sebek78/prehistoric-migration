@@ -1,0 +1,18 @@
+<app-dialog [open]="open">
+  <div class="cards">
+    <div class="card" *ngFor=" let card of newCards; let i = index">
+      <div class="card__type">{{ card.type }}</div>
+      <div class="card__label">{{ card.label }}</div>
+      <div class="card__button">
+        <app-menu-button
+          [innerText]="'Zmień'"
+          [disabled]="!card.rollAgain"
+          minWidth="'80px'"
+          (click)="card.rollAgain && rollAgain > 0 && getNextCard(i)"
+          ></app-menu-button>
+      </div>
+    </div>
+  </div>
+  <button (click)="setNewResources()">Set</button>
+  <p>{{ rollAgain }}</p>
+</app-dialog>

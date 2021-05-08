@@ -60,12 +60,21 @@ export class TribesService {
     return this.list.find(tribe=>tribe.id === id)?.name || '?'
   }
 
+  getHumanPlayerTribe() {
+    return this.list.find(tribe => tribe.controledByPlayer)
+  }
+
   setPlayer(index: number){
     this.list[index].controledByPlayer = true
   }
 
   shuffleTribes(){
     this.list = this.rngService.shuffleTribes(this.list)
+  }
+
+  getPlayerNewResources(){
+    const player = this.getHumanPlayerTribe()
+    return player?.newResources
   }
 
   setNewResources(id: number, newResources: IResource[]){

@@ -37,7 +37,6 @@ export class GameService {
       this.turn = this.savedGameServiceData?.turn || 0;
       this.winningConditions = this.savedGameServiceData?.winningConditions || []
       if (this.isRunning) this.engine.initControlledStatus()
-      if (this.savedGameServiceData?.logs) loggerService.setSavedLogs(this.savedGameServiceData.logs)
   }
 
   startGame(selectedTribeId: number) {
@@ -78,7 +77,7 @@ export class GameService {
     this.turn +=1;
     this.engine.setCurrentTurn(this.turn)
     this.engine.newResources();
-    console.log(this.loggerService.getLogs())
+    this.saveGame();
   }
 
   checkWinningConditions(): WinningCondition[] {

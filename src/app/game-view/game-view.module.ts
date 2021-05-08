@@ -9,6 +9,7 @@ import { CounterComponent } from './counter/counter.component';
 import { GameViewComponent } from './game-view.component';
 import { ProgressListComponent } from './progress-list/progress-list.component';
 import { LogsComponent } from './logs/logs.component';
+import { NewResourcesDialogComponent } from './new-resources-dialog/new-resources-dialog.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { LogsComponent } from './logs/logs.component';
     CounterComponent,
     ProgressListComponent,
     LogsComponent,
+    NewResourcesDialogComponent,
   ],
   imports: [
     CommonModule,

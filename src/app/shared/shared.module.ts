@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from '../app-routing.module';
 
-import { MenuButtonComponent } from './menu-button/menu-button.component'
+import { MenuButtonComponent } from './menu-button/menu-button.component';
+import { DialogComponent } from './dialog/dialog.component'
 
 
 @NgModule({
@@ -13,9 +14,11 @@ import { MenuButtonComponent } from './menu-button/menu-button.component'
   ],
   declarations: [
     MenuButtonComponent,
+    DialogComponent,
   ],
   exports: [
     MenuButtonComponent,
+    DialogComponent
   ]
 })
 export class SharedModule { }

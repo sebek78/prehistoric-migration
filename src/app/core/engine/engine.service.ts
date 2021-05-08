@@ -8,6 +8,7 @@ import { MIN_ROLLS, MAX_ROLLS,D10 } from './constants';
 import { LoggerService } from './logger.service';
 import { Resources, IResource } from './resources'
 import { logTypes } from './log'
+import { HumanActions } from './human-actions';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +17,12 @@ export class EngineService {
   maxPlayers: number;
   tribesStatus: IControlledStatus[];
   aiActions: AiActions;
+  humanActions: HumanActions;
   currentTurn: number;
   currentPlayerId: number = 0;
   currentIndex: number = 0;
-  private messageSource = new BehaviorSubject(false);
-  newResourcesDialogStatus = this.messageSource.asObservable();
+  private statusSource = new BehaviorSubject(false);
+  newResourcesDialogStatus = this.statusSource.asObservable();
 
   constructor(
     private tribesService: TribesService,
@@ -30,6 +32,7 @@ export class EngineService {
   ) {
     this.maxPlayers = MAX_PLAYERS
     this.aiActions  = new AiActions()
+    this.humanActions = new HumanActions()
   }
 
   initControlledStatus(){
@@ -59,16 +62,19 @@ export class EngineService {
   }
 
   closeNewResourcesDialog() {
-    this.messageSource.next(false)
+    this.statusSource.next(false)
+    const cards = this.tribesService.getPlayerNewResources() || []
+    const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
+    this.loggerService.addLog(logTypes.phase1,this.currentTurn, ' [ H ] ' + cardsLog)
   }
 
   /* new Resources phase */
   newResources(){
+    this.humanActions.resetReroll()
     this.phaseLoop()
   }
 
   aiNewResuorces = () => {
-    console.log('AI', this.currentPlayerId)
     let cards = this.drawNewResources(this.currentPlayerId)
     cards = this.aiActions.newResourcesDecision(cards)
     const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
@@ -77,11 +83,17 @@ export class EngineService {
   }
 
   playerNewResuorces = () => {
-    console.log('H', this.currentPlayerId)
     let cards = this.drawNewResources(this.currentPlayerId)
-    const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
-    this.loggerService.addLog(logTypes.phase1,this.currentTurn, ' [ H ] ' + cardsLog)
-    this.messageSource.next(true)
+    this.tribesService.setNewResources(this.currentPlayerId, cards)
+    this.statusSource.next(true)
+  }
+
+  getNextCard = (index: number) => {
+    const {nextCard, rollAgain } = this.humanActions.getNextCard();
+    const newResources = this.tribesService.getPlayerNewResources() || [];
+    if (newResources.length) newResources[index] = nextCard;
+    this.tribesService.setNewResources(this.currentPlayerId, newResources)
+    return rollAgain
   }
 
   drawNewResources(id: number) {
