@@ -1,4 +1,6 @@
 <app-dialog [open]="open">
+  <div class="dialog-title">Nowe zasoby</div>
+  <div class="dialog-info">{{ 'Dostępne ponowne losowania: ' + rollAgain }}</div>
   <div class="cards">
     <div class="card" *ngFor=" let card of newCards; let i = index">
       <div class="card__type">{{ card.type }}</div>
@@ -13,6 +15,10 @@
       </div>
     </div>
   </div>
-  <button (click)="setNewResources()">Set</button>
-  <p>{{ rollAgain }}</p>
+  <div class="action-button-container">
+    <app-menu-button
+    (click)="setNewResources()"
+    [innerText]="'Zatwierdź'">
+  </app-menu-button>
+  </div>
 </app-dialog>

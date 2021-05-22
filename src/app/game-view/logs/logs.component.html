@@ -1,6 +1,7 @@
-<div>
-  <div *ngFor="let log of logs.reverse()">
-    {{ 'Turn: ' + log.turn + ' (' + log.type + '), id: ' + log.id + ', ' + log.message }}
+<div class="logs">
+  <div class="logs__container">
+    <div class="log" *ngFor="let log of logs.reverse()">
+      {{ 'Turn: ' + log.turn + ' (' + log.type + '), id: ' + log.id + ', ' + log.message }}
+    </div>
   </div>
 </div>
-
