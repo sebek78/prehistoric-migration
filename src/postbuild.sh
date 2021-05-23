@@ -1,10 +1,6 @@
- cd dist
- mkdir game
- mkdir manual
- cd ../src
- cp index.php ../dist/game
- cp index.php ../dist/manual
+ cd src
  cp index.php ../dist/
+ cp .htaccess ../dist/
  cd ../dist
  rm index.html
  echo postbuild done.
