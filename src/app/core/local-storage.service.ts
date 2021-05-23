@@ -15,7 +15,6 @@ export class LocalStorageService {
     const savedGame: string | null = localStorage.getItem(SAVE_KEY);
     const gameData = savedGame ? JSON.parse(savedGame) : null;
     this.savedGame = gameData;
-    console.log(this.savedGame)
   }
 
   saveGame(data:string){

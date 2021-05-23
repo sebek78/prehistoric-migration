@@ -10,7 +10,7 @@
   <title>Prehistoryczna migracja</title>
   <base href="/prehistoryczna-migracja/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" href="/assets/favicon-p.png">
+  <link rel="icon" type="image/png" href="/prehistoryczna-migracja/assets/favicon-p.png">
   <link href="https://fonts.googleapis.com/css2?family=Underdog&amp;display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Nunito&amp;display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/prehistoryczna-migracja/styles.css"></head>
