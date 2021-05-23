@@ -19,10 +19,16 @@
   border-radius: 4px;
   z-index: 2;
 
+  &--max {
+    max-width: max-content;
+  }
+  &--limited {
+    max-width: 640px;
+  }
+
   @media screen and (min-width: 600px) {
     top: 10vh;
     left: 50%;
     transform: translateX(-50%);
-    max-width: max-content;
   }
 }

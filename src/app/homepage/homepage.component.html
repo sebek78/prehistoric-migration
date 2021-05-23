@@ -17,7 +17,11 @@
             <app-menu-button *ngIf="hasSavedGame" (click)="deleteSavedGame()" [innerText]="'Usuń zapis gry'"></app-menu-button>
             <app-menu-button routerLink="/manual" [innerText]="'Zasady gry'"></app-menu-button>
         </nav>
-        <app-dialog [open]="showEntryDialog" [close]="handleClose">
+        <app-dialog
+          [open]="showEntryDialog"
+          [close]="handleClose"
+          [maxWidth]="false"
+          >
             <p class="text">
                 Rozpoczynasz rozwój i ekspansję prehistorycznego plemienia. Aby zwyciężyć
                 musisz <strong>zasiedlić 16 lub więcej prowincji</strong>
