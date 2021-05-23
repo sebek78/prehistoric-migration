@@ -1,6 +1,7 @@
 import { Injectable  } from '@angular/core';
 import { clone } from 'ramda'
-import { IField } from './map.service'
+import { LocalStorageService } from './local-storage.service';
+import { MapService } from './map.service'
 
 export interface IBand {
   ownerId: number,
@@ -13,11 +14,16 @@ export interface IBand {
   providedIn: 'root'
 })
 export class BandsService {
-  constructor() { }
+  private INIT_GAME_BANDS_SIZE = 6;
+  public bands: IBand[];
 
-  INIT_GAME_BANDS_SIZE = 6;
-  bands: IBand[] =[];
-
+  constructor(
+    private mapService: MapService,
+    private localStorageService: LocalStorageService
+  ) {
+    const savedBands = this.localStorageService.getBandsServiceSavedData()
+    this.bands = savedBands ? savedBands : []
+  }
 
   createBand(ownerId:number = -1, size:number, x:number, y:number){
     const newBand = {
@@ -27,6 +33,10 @@ export class BandsService {
       y,
     }
     this.bands.push(newBand)
+  }
+
+  getBands(){
+    return this.bands
   }
 
   getBandsByPosition(x:number, y:number){
@@ -39,8 +49,9 @@ export class BandsService {
     }, 0);
   }
 
-  createFirstBands(mapFields: IField[]){
-    mapFields = mapFields.map(field=>{
+  createFirstBands(){
+    const map = this.mapService.getMap();
+    let updatedMap = map.map(field=>{
       const updatedField = clone(field);
       if(updatedField.settled !== -1) {
         this.createBand(
@@ -53,5 +64,6 @@ export class BandsService {
       delete updatedField.settled;
       return updatedField
     })
+    this.mapService.updateMap(updatedMap);
   }
 }

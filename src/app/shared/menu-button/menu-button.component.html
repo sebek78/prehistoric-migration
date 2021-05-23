@@ -1,3 +1,8 @@
-<button [routerLink]="link ? link : null" class="menu-button" >
+<button
+  [routerLink]="link ? link : null"
+  class="menu-button"
+  [ngClass]="{'disabled': disabled === true}"
+  [ngStyle]="{'min-width': minWidth ? minWidth :  '160px' }"
+  >
     {{ innerText }}
 </button>

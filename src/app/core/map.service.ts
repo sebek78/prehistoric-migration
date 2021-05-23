@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RngService } from './rng.service'
-import { BandsService } from './bands.service'
+import { LocalStorageService } from './local-storage.service';
 
 export interface IField {
   x: number,
@@ -22,9 +22,14 @@ export class MapService {
 
   constructor(
     private rngService: RngService,
-    private bandsService: BandsService
+    private localStorageService: LocalStorageService
   ) {
-    this.createMap()
+    const savedMap = this.localStorageService.getMapServiceSavedData()
+    if (savedMap) {
+      this.fields = savedMap;
+    } else {
+      this.createMap()
+    }
   }
 
   createMap(){
@@ -43,6 +48,14 @@ export class MapService {
     }
     this.randomizeWaterFields();
     this.randomizeStartingPosition();
+  }
+
+  getMap(){
+    return this.fields
+  }
+
+  updateMap(updatedMap: IField[]){
+    this.fields = updatedMap
   }
 
   findFieldIndex(x: number, y: number) {
@@ -81,8 +94,8 @@ export class MapService {
         field.x === this.MAP_WIDTH - 2 && field.y === 0 && !field.water && !this.isWaterField(this.MAP_WIDTH - 1,1) ||
         field.x === this.MAP_WIDTH - 1 && field.y === 1 && !field.water && !this.isWaterField(this.MAP_WIDTH - 2, 0) ||
         // bottom left
-        field.x === 0 && field.y === this.MAP_HEIGHT - 2 && !field.water && !this.isWaterField(this.MAP_HEIGHT -1, 1) ||
-        field.x === 1 && field.y === this.MAP_HEIGHT - 1 && !field.water && !this.isWaterField(1,this.MAP_HEIGHT -1) ||
+        field.x === 0 && field.y === this.MAP_HEIGHT - 2 && !field.water && !this.isWaterField(1, this.MAP_HEIGHT -1) ||
+        field.x === 1 && field.y === this.MAP_HEIGHT - 1 && !field.water && !this.isWaterField(0, this.MAP_HEIGHT -2) ||
         // bottom right
         field.x === this.MAP_WIDTH - 1 && field.y === this.MAP_HEIGHT -2 && !field.water && !this.isWaterField(this.MAP_WIDTH - 2, this.MAP_HEIGHT - 1) ||
         field.x === this.MAP_WIDTH - 2 && field.y === this.MAP_HEIGHT -1 && !field.water && !this.isWaterField(this.MAP_WIDTH - 1, this.MAP_HEIGHT - 2)

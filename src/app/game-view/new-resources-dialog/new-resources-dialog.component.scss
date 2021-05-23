@@ -1,0 +1,53 @@
+@import "../../../sass/variables";
+
+.dialog-title {
+  font-family: $font-decorative;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+.dialog-info {
+  font-family: $font-regular;
+  font-size: 20px;
+  text-align: center;
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 120px;
+  margin: 10px;
+  background-color: $bgColorLighter;
+  border: 1px solid $primaryDark;
+  border-radius: 4px;
+  text-align: center;
+
+  &__type {
+    font-family: $font-decorative;
+    line-height: 100px;
+    font-size: 80px;
+  }
+  &__label {
+    background-color: $bgColorLight;
+    line-height: 40px;
+    font-size: 18px;
+  }
+  &__button {
+    height: 68px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.action-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

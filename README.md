@@ -1,6 +1,6 @@
 # prehistoric-migration
 
-A simple turn-based strategy board game for a single player. The content language is Polish.
+A simple turn-based strategy board game for a single player.
 
 ## Features
 
@@ -11,7 +11,8 @@ A simple turn-based strategy board game for a single player. The content languag
 
 ## Live version
 
-[not available yet](http://mybytes.pl/)
+The content language is Polish. **Not playable yet.**
+[Live version](https://mybytes.pl/prehistoryczna-migracja)
 
 ## Technology stack
 

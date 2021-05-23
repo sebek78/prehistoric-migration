@@ -1,23 +1,23 @@
 import Advance from './advances/advance'
-import AdvancesManager from './advances/advances-manager'
 import { AdvanceTypes } from './advances/initAdvancesList'
+import { IResource } from './engine/resources'
 
-const defaultTribes = [
+export const defaultTribes = [
   {
     name: "Tygrysy",
-    color: "#ff3300",
+    color: "#ff3300",  //orange
   },
   {
     name: "Niedźwiedzie",
-    color: "#262626",
+    color: "#262626", // graphite
   },
   {
     name: "Wilki",
-    color: "#737373",
+    color: "#737373", //grey
   },
   {
     name: "Mamuty",
-    color: "#4d2600",
+    color: "#4d2600", //brown
   },
 ];
 
@@ -26,21 +26,19 @@ export class Tribe {
   color: string;
   controledByPlayer: boolean;
   id: number;
-  advances: Advance[];
+  advances: Advance[] = [];
   undiscoveredAdvances: Advance[];
+  discoveredAdvances: Advance[] = [];
+  newResources: IResource[] = [];
 
-  constructor(index: number) {
+  constructor(index: number, undiscoveredAdvances: Advance[]) {
     this.name = defaultTribes[index].name;
     this.color = defaultTribes[index].color;
     this.controledByPlayer = false;
     this.id = index;
-    this.advances = [];
-    this.undiscoveredAdvances = AdvancesManager.createAdvancesList();
+    this.undiscoveredAdvances = undiscoveredAdvances;
   }
 
-  static getTribeColor(index: number){
-    return defaultTribes[index].color;
-  }
 
   checkAdvancesWinningCondition () {
     const advancesNumber: number[] = [];
@@ -53,6 +51,11 @@ export class Tribe {
       advancesNumber.push(thisTypeNumber)
     }
 
-    return advancesNumber.every(num => num >= 2)
+    const hasEachTwoTypesOfAdvances = advancesNumber.every(num => num >= 2)
+
+    return {
+      hasEachTwoTypesOfAdvances,
+      advancesNumber,
+    }
   }
 }

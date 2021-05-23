@@ -1,4 +1,6 @@
 import { Component,  OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LocalStorageService } from './core/local-storage.service';
 
 export interface ITribeLabel {
   name: string,
@@ -11,11 +13,15 @@ export interface ITribeLabel {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  constructor() {}
+  constructor(
+    private localStorage: LocalStorageService,
+    private router: Router
+  ) {}
   path: string  | undefined;
-  
+
   ngOnInit() {
     this.path = document.body.dataset.path;
-    console.log(this.path);
+    this.localStorage.loadGame();
+    this.router.navigate([this.path]);
   }
 }

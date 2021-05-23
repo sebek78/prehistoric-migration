@@ -8,6 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 export class MenuButtonComponent implements OnInit {
   @Input() link: string | undefined;
   @Input() innerText: string;
+  @Input() minWidth: string | undefined;
+  @Input() disabled: boolean | undefined;
 
   constructor() {}
   ngOnInit(): void {}
