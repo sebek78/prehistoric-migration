@@ -2,16 +2,20 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BandsService } from '../bands.service';
 import { RngService } from '../rng.service';
-import { TribesService, MAX_PLAYERS, IControlledStatus } from '../tribes.service';
+import {
+  TribesService,
+  MAX_PLAYERS,
+  IControlledStatus,
+} from '../tribes.service';
 import { AiActions } from './aiActions';
-import { MIN_ROLLS, MAX_ROLLS,D10 } from './constants';
+import { MIN_ROLLS, MAX_ROLLS, D10 } from './constants';
 import { LoggerService } from './logger.service';
-import { Resources, IResource } from './resources'
-import { logTypes } from './log'
+import { Resources, IResource } from './resources';
+import { logTypes } from './log';
 import { HumanActions } from './human-actions';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EngineService {
   maxPlayers: number;
@@ -21,6 +25,7 @@ export class EngineService {
   currentTurn: number;
   currentPlayerId: number = 0;
   currentIndex: number = 0;
+  currentPhase: number = 0;
   private statusSource = new BehaviorSubject(false);
   newResourcesDialogStatus = this.statusSource.asObservable();
 
@@ -30,83 +35,117 @@ export class EngineService {
     private rngService: RngService,
     private loggerService: LoggerService
   ) {
-    this.maxPlayers = MAX_PLAYERS
-    this.aiActions  = new AiActions()
-    this.humanActions = new HumanActions()
+    this.maxPlayers = MAX_PLAYERS;
+    this.aiActions = new AiActions();
+    this.humanActions = new HumanActions();
   }
 
-  initControlledStatus(){
-    this.tribesStatus = this.tribesService.getIsControlledStatus()
+  initControlledStatus() {
+    this.tribesStatus = this.tribesService.getIsControlledStatus();
   }
 
   phaseLoop() {
     if (this.currentIndex >= MAX_PLAYERS) {
       this.currentIndex = 0;
-      return;
+      this.currentPhase += 1;
+      if (this.currentPhase > 1) {
+        console.log(this.currentPhase);
+        return;
+      }
     } else {
       this.currentPlayerId = this.tribesStatus[this.currentIndex].id;
     }
 
-    if (!this.tribesStatus[this.currentIndex].controlledByPlayer) {
-      this.aiNewResuorces()
-      this.currentIndex += 1
-      this.phaseLoop()
-    } else {
-      this.playerNewResuorces()
-      this.currentIndex += 1
+    // new resources
+    if (this.currentPhase === 0) {
+      if (!this.tribesStatus[this.currentIndex].controlledByPlayer) {
+        this.aiNewResuorces();
+        this.currentIndex += 1;
+        this.phaseLoop();
+      } else {
+        this.playerNewResuorces();
+        this.currentIndex += 1;
+      }
+    }
+    // set new resources
+    if (this.currentPhase === 1) {
+      this.setNewBands();
+      this.currentPhase = 0; // reset currnet phase
     }
   }
 
-  setCurrentTurn( currentTurn: number){
+  setCurrentTurn(currentTurn: number) {
     this.currentTurn = currentTurn;
   }
 
   closeNewResourcesDialog() {
-    this.statusSource.next(false)
-    const cards = this.tribesService.getPlayerNewResources() || []
-    const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
-    this.loggerService.addLog(logTypes.phase1,this.currentTurn, ' [ H ] ' + cardsLog)
+    this.statusSource.next(false);
+    const cards = this.tribesService.getPlayerNewResources() || [];
+    const cardsLog = `Player Id:${this.currentPlayerId} ${cards
+      .map((card) => card.type)
+      .join(',')}`;
+    this.loggerService.addLog(
+      logTypes.phase1,
+      this.currentTurn,
+      ' [ H ] ' + cardsLog
+    );
   }
 
   /* new Resources phase */
-  newResources(){
-    this.humanActions.resetReroll()
-    this.phaseLoop()
+  newResources() {
+    this.humanActions.resetReroll();
+    this.phaseLoop();
   }
 
   aiNewResuorces = () => {
-    let cards = this.drawNewResources(this.currentPlayerId)
-    cards = this.aiActions.newResourcesDecision(cards)
-    const cardsLog = `Player Id:${this.currentPlayerId} ${cards.map(card=>card.type).join(',')}`;
-    this.loggerService.addLog(logTypes.phase1,this.currentTurn, cardsLog)
-    this.tribesService.setNewResources(this.currentPlayerId, cards)
-  }
+    let cards = this.drawNewResources(this.currentPlayerId);
+    cards = this.aiActions.newResourcesDecision(cards);
+    const cardsLog = `Player Id:${this.currentPlayerId} ${cards
+      .map((card) => card.type)
+      .join(',')}`;
+    this.loggerService.addLog(logTypes.phase1, this.currentTurn, cardsLog);
+    this.tribesService.setNewResources(this.currentPlayerId, cards);
+  };
 
   playerNewResuorces = () => {
-    let cards = this.drawNewResources(this.currentPlayerId)
-    this.tribesService.setNewResources(this.currentPlayerId, cards)
-    this.statusSource.next(true)
-  }
+    let cards = this.drawNewResources(this.currentPlayerId);
+    this.tribesService.setNewResources(this.currentPlayerId, cards);
+    this.statusSource.next(true);
+  };
 
   getNextCard = (index: number) => {
-    const {nextCard, rollAgain } = this.humanActions.getNextCard();
+    const { nextCard, rollAgain } = this.humanActions.getNextCard();
     const newResources = this.tribesService.getPlayerNewResources() || [];
     if (newResources.length) newResources[index] = nextCard;
-    this.tribesService.setNewResources(this.currentPlayerId, newResources)
-    return rollAgain
-  }
+    this.tribesService.setNewResources(this.currentPlayerId, newResources);
+    return rollAgain;
+  };
 
   drawNewResources(id: number) {
     const fieldsNumber = this.bandsService.getNumberOfSettledFieldsById(id);
     const additionalRolls = Math.floor(fieldsNumber / 3); // one dice roll for each 3 fields extra
-    const diceRollNumber = additionalRolls > 3 ? MAX_ROLLS : MIN_ROLLS + additionalRolls
-    const resourcesSet = new Resources().defaultSet()
+    const diceRollNumber =
+      additionalRolls > 3 ? MAX_ROLLS : MIN_ROLLS + additionalRolls;
+    const resourcesSet = new Resources().defaultSet();
     let cards: IResource[] = [];
 
-    for (let i=0; i< diceRollNumber; i++) {
+    for (let i = 0; i < diceRollNumber; i++) {
       const draw = this.rngService.draw(D10);
       cards.push(resourcesSet[draw]);
     }
-    return cards
+    return cards;
+  }
+
+  /* set new resources phase */
+
+  setNewBands() {
+    const newBands = this.tribesService.getNewBands();
+    newBands.forEach(({ tribeId, newBandsNumber }) => {
+      while (newBandsNumber > 0) {
+        const index = this.bandsService.findMinBandsIndex(tribeId);
+        this.bandsService.insertNewBand(index);
+        newBandsNumber -= 1;
+      }
+    });
   }
 }
