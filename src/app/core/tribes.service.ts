@@ -105,4 +105,28 @@ export class TribesService {
     const index = this.findTribeIndex(id);
     this.list[index].newResources = newResources;
   }
+  getNewAdvances() {
+    return this.list.map((tribe) => {
+      const BA = tribe.newResources.findIndex(
+        (newResource) => newResource.type === 'BA'
+      );
+      const EA = tribe.newResources.findIndex(
+        (newResource) => newResource.type === 'EA'
+      );
+      if (BA !== -1 && EA !== -1) {
+        return tribe.id;
+      } else {
+        return -1;
+      }
+    });
+  }
+  setNewAdvance(id: number) {
+    const index = this.findTribeIndex(id);
+    const advancesNumber = this.list[index].undiscoveredAdvances.length;
+    const randomIndex = Math.floor(Math.random() * advancesNumber);
+    this.list[index].discoveredAdvances.push(
+      this.list[index].undiscoveredAdvances[randomIndex]
+    );
+    this.list[index].undiscoveredAdvances.splice(randomIndex, 1);
+  }
 }

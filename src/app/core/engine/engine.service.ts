@@ -70,6 +70,7 @@ export class EngineService {
     // set new resources
     if (this.currentPhase === 1) {
       this.setNewBands();
+      this.setNewAdvances();
       this.currentPhase = 0; // reset currnet phase
     }
   }
@@ -146,6 +147,13 @@ export class EngineService {
         this.bandsService.insertNewBand(index);
         newBandsNumber -= 1;
       }
+    });
+  }
+
+  setNewAdvances() {
+    const newAdvances = this.tribesService.getNewAdvances();
+    newAdvances.forEach((id) => {
+      if (id !== -1) this.tribesService.setNewAdvance(id);
     });
   }
 }
