@@ -39,6 +39,10 @@ export class BandsService {
     return this.bands;
   }
 
+  getBandsById(id: number) {
+    return this.bands.filter((band) => band.ownerId === id);
+  }
+
   getBandsByPosition(x: number, y: number) {
     return this.bands.filter((band) => band.x === x && band.y === y);
   }
@@ -91,6 +95,38 @@ export class BandsService {
 
   insertNewBand(index: number) {
     this.bands[index].size += 1;
-    console.log(index, this.bands[index]);
+  }
+
+  selectMaxSizeBand(id: number) {
+    const aiPlayerBands = this.getBandsById(id);
+
+    let selectedBand;
+    const max = aiPlayerBands.reduce(
+      (max, band) => (band.size > max ? band.size : max),
+      0
+    );
+    const maxSizeBands = aiPlayerBands.filter((band) => band.size === max);
+    if (maxSizeBands.length === 1) {
+      selectedBand = maxSizeBands[0];
+    } else {
+      const randomIndex = Math.floor(Math.random() * maxSizeBands.length);
+      selectedBand = maxSizeBands[randomIndex];
+    }
+    return selectedBand;
+  }
+
+  moveBand(id: number, x: number, y: number, newX: number, newY: number) {
+    const sourceBandIndex = this.bands.findIndex(
+      (band) => band.ownerId === id && band.x === x && band.y === y
+    );
+    this.bands[sourceBandIndex].size -= 1;
+    const targetBandIndex = this.bands.findIndex(
+      (band) => band.ownerId === id && band.x === newX && band.y === newY
+    );
+    if (targetBandIndex === -1) {
+      this.createBand(id, 1, newX, newY);
+    } else {
+      this.bands[targetBandIndex].size += 1;
+    }
   }
 }

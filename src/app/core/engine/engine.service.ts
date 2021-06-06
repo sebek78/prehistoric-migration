@@ -13,6 +13,7 @@ import { LoggerService } from './logger.service';
 import { Resources, IResource } from './resources';
 import { logTypes } from './log';
 import { HumanActions } from './human-actions';
+import { MapService } from '../map.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,8 @@ export class EngineService {
     private tribesService: TribesService,
     private bandsService: BandsService,
     private rngService: RngService,
-    private loggerService: LoggerService
+    private loggerService: LoggerService,
+    private mapService: MapService
   ) {
     this.maxPlayers = MAX_PLAYERS;
     this.aiActions = new AiActions();
@@ -48,13 +50,9 @@ export class EngineService {
     if (this.currentIndex >= MAX_PLAYERS) {
       this.currentIndex = 0;
       this.currentPhase += 1;
-      if (this.currentPhase > 1) {
-        console.log(this.currentPhase);
-        return;
-      }
-    } else {
-      this.currentPlayerId = this.tribesStatus[this.currentIndex].id;
     }
+
+    this.currentPlayerId = this.tribesStatus[this.currentIndex].id;
 
     // new resources
     if (this.currentPhase === 0) {
@@ -66,13 +64,34 @@ export class EngineService {
         this.playerNewResuorces();
         this.currentIndex += 1;
       }
+      return;
     }
     // set new resources
     if (this.currentPhase === 1) {
       this.setNewBands();
       this.setNewAdvances();
-      this.currentPhase = 0; // reset currnet phase
+      this.currentPhase += 1;
     }
+    // bands movement
+    if (this.currentPhase === 2) {
+      if (!this.tribesStatus[this.currentIndex].controlledByPlayer) {
+        const selectedMaxSizeBand = this.bandsService.selectMaxSizeBand(
+          this.currentPlayerId
+        );
+        const { x, y } = selectedMaxSizeBand;
+        const availableFields = this.mapService.getAvailableFields(x, y);
+        const selectedField = this.aiActions.makeMove(availableFields);
+        const { x: newX, y: newY } = selectedField;
+        this.bandsService.moveBand(this.currentPlayerId, x, y, newX, newY);
+        this.currentIndex += 1;
+        this.phaseLoop();
+      } else {
+        this.currentIndex += 1;
+      }
+      return;
+    }
+    this.currentIndex = 0;
+    this.currentPhase = 0;
   }
 
   setCurrentTurn(currentTurn: number) {
