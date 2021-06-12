@@ -4,6 +4,7 @@ import { GameService, WinningCondition } from '../core/game.service';
 import { MapService, IField } from '../core/map.service';
 import { Subscription } from 'rxjs';
 import { MAX_REROLL } from '../core/engine/constants';
+import { TribesService } from '../core/tribes.service';
 
 @Component({
   selector: 'app-game-view',
@@ -12,7 +13,7 @@ import { MAX_REROLL } from '../core/engine/constants';
 })
 export class GameViewComponent implements OnInit {
   public fields: IField[] = [];
-  public winningConditions: WinningCondition[][] = [];
+  public winningConditions: WinningCondition[] = [];
   public turn: number;
   openNewResourcesdDialog: boolean;
   statusSubscription: Subscription;
@@ -21,12 +22,13 @@ export class GameViewComponent implements OnInit {
   constructor(
     private gameService: GameService,
     private mapService: MapService,
-    private engineService: EngineService
+    private engineService: EngineService,
+    private tribesService: TribesService
   ) {}
 
   ngOnInit(): void {
     this.fields = this.mapService.fields;
-    this.winningConditions = this.gameService.winningConditions;
+    this.winningConditions = this.gameService.getLastWinningCondition();
     this.turn = this.gameService.getTurn();
     this.statusSubscription =
       this.engineService.newResourcesDialogStatus.subscribe(
@@ -40,6 +42,7 @@ export class GameViewComponent implements OnInit {
   }
 
   handleNextTurn() {
+    this.winningConditions = this.gameService.getLastWinningCondition();
     this.gameService.nextTurn();
   }
 
@@ -57,4 +60,8 @@ export class GameViewComponent implements OnInit {
     const rollAgain = this.engineService.getNextCard(index);
     this.rollAgain = rollAgain;
   };
+
+  getPlayerMovement() {
+    return this.tribesService.getHumanPlayerMovement();
+  }
 }

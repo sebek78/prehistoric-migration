@@ -45,7 +45,7 @@ export class GameService {
     this.tribesService.shuffleTribes();
     this.engine.initControlledStatus();
     this.bandsService.createFirstBands();
-    this.winningConditions.push(this.checkWinningConditions());
+    this.updateWinningConditions();
     this.saveGame();
     this.nextTurn();
   }
@@ -76,7 +76,7 @@ export class GameService {
   nextTurn() {
     this.turn += 1;
     this.engine.setCurrentTurn(this.turn);
-    console.log(this.tribesService.getTribes());
+    this.updateWinningConditions();
     this.engine.newResources();
     this.saveGame();
   }
@@ -102,5 +102,13 @@ export class GameService {
         advancesSum,
       };
     });
+  }
+
+  getLastWinningCondition() {
+    return this.winningConditions[this.winningConditions.length - 1];
+  }
+
+  updateWinningConditions() {
+    this.winningConditions.push(this.checkWinningConditions());
   }
 }

@@ -8,6 +8,7 @@ export interface IField {
   id: number;
   water: boolean;
   settled?: number;
+  selected: boolean;
 }
 
 @Injectable({
@@ -41,6 +42,7 @@ export class MapService {
           id,
           water: false,
           settled: -1,
+          selected: false,
         };
         this.fields.push(field);
       }
@@ -210,5 +212,12 @@ export class MapService {
       }
     }
     return avaiableFields;
+  }
+
+  setSelectField(id: number, value: boolean) {
+    const index = this.fields.findIndex((field) => field.id === id);
+    if (index !== -1) {
+      this.fields[index].selected = value;
+    }
   }
 }

@@ -13,7 +13,7 @@ import { LoggerService } from './logger.service';
 import { Resources, IResource } from './resources';
 import { logTypes } from './log';
 import { HumanActions } from './human-actions';
-import { MapService } from '../map.service';
+import { IField, MapService } from '../map.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +29,7 @@ export class EngineService {
   currentPhase: number = 0;
   private statusSource = new BehaviorSubject(false);
   newResourcesDialogStatus = this.statusSource.asObservable();
+  selectedField: IField | null = null;
 
   constructor(
     private tribesService: TribesService,
@@ -70,25 +71,44 @@ export class EngineService {
     if (this.currentPhase === 1) {
       this.setNewBands();
       this.setNewAdvances();
+      this.tribesService.setMovement();
       this.currentPhase += 1;
     }
     // bands movement
     if (this.currentPhase === 2) {
       if (!this.tribesStatus[this.currentIndex].controlledByPlayer) {
-        const selectedMaxSizeBand = this.bandsService.selectMaxSizeBand(
+        let availableMoves = this.tribesService.getMovement(
           this.currentPlayerId
         );
-        const { x, y } = selectedMaxSizeBand;
-        const availableFields = this.mapService.getAvailableFields(x, y);
-        const selectedField = this.aiActions.makeMove(availableFields);
-        const { x: newX, y: newY } = selectedField;
-        this.bandsService.moveBand(this.currentPlayerId, x, y, newX, newY);
+        while (availableMoves > 0) {
+          const selectedMaxSizeBand = this.bandsService.selectMaxSizeBand(
+            this.currentPlayerId
+          );
+          const { x, y } = selectedMaxSizeBand;
+          const availableFields = this.mapService.getAvailableFields(x, y);
+          const selectedField = this.aiActions.makeMove(availableFields);
+          const { x: newX, y: newY } = selectedField;
+          this.bandsService.moveBand(this.currentPlayerId, x, y, newX, newY);
+          this.tribesService.decreaseMovement(this.currentPlayerId);
+          availableMoves -= 1;
+        }
         this.currentIndex += 1;
         this.phaseLoop();
       } else {
-        this.currentIndex += 1;
+        let humanPlayerAvailableMoves = this.tribesService.getMovement(
+          this.currentPlayerId
+        );
+        if (humanPlayerAvailableMoves === 0) {
+          this.currentIndex += 1;
+          this.phaseLoop();
+        } else {
+          this.currentIndex += 1;
+        }
       }
       return;
+    }
+    if (this.currentPhase === 3) {
+      console.log('event phase (3)');
     }
     this.currentIndex = 0;
     this.currentPhase = 0;
@@ -174,5 +194,55 @@ export class EngineService {
     newAdvances.forEach((id) => {
       if (id !== -1) this.tribesService.setNewAdvance(id);
     });
+  }
+
+  /* human player move phase */
+
+  setSelectedField(field: IField) {
+    const availableMoves = this.tribesService.getMovement(this.currentPlayerId);
+    if (availableMoves < 1) return;
+
+    if (!this.selectedField) {
+      this.selectMapField(field);
+    } else if (this.selectedField.id === field.id) {
+      this.deselectMapField(field);
+    } else {
+      this.checkMove(field);
+    }
+  }
+
+  selectMapField(field: IField) {
+    this.selectedField = field;
+    this.mapService.setSelectField(field.id, true);
+  }
+
+  deselectMapField(field: IField) {
+    this.selectedField = null;
+    this.mapService.setSelectField(field.id, false);
+  }
+
+  checkMove(field: IField) {
+    if (this.selectedField) {
+      const { x, y } = this.selectedField;
+      const { x: newX, y: newY } = field;
+      const hasBands = this.bandsService.playerHasBandonField(
+        this.currentPlayerId,
+        x,
+        y
+      );
+      if (hasBands) {
+        this.bandsService.moveBand(this.currentPlayerId, x, y, newX, newY);
+        this.tribesService.decreaseMovement(this.currentPlayerId);
+        this.deselectMapField(this.selectedField);
+        this.bandsService.removeEmptyBands();
+        const availableMoves = this.tribesService.getMovement(
+          this.currentPlayerId
+        );
+        if (availableMoves === 0) this.phaseLoop();
+      } else {
+        this.deselectMapField(this.selectedField);
+        this.selectMapField(field);
+      }
+    }
   }
 }

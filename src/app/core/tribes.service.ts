@@ -49,7 +49,7 @@ export class TribesService {
 
   getIsControlledStatus() {
     return this.list.map((tribe) => ({
-      controlledByPlayer: tribe.controledByPlayer,
+      controlledByPlayer: tribe.controlledByPlayer,
       id: tribe.id,
     }));
   }
@@ -66,8 +66,14 @@ export class TribesService {
     return this.list.find((tribe) => tribe.id === id)?.name || '?';
   }
 
+  getTribeControlledByPlayer(id: number) {
+    return (
+      this.list.find((tribe) => tribe.id === id)?.controlledByPlayer || false
+    );
+  }
+
   getHumanPlayerTribe() {
-    return this.list.find((tribe) => tribe.controledByPlayer);
+    return this.list.find((tribe) => tribe.controlledByPlayer);
   }
 
   getNewBandsNumber(id: number) {
@@ -89,7 +95,7 @@ export class TribesService {
   }
 
   setPlayer(index: number) {
-    this.list[index].controledByPlayer = true;
+    this.list[index].controlledByPlayer = true;
   }
 
   shuffleTribes() {
@@ -128,5 +134,28 @@ export class TribesService {
       this.list[index].undiscoveredAdvances[randomIndex]
     );
     this.list[index].undiscoveredAdvances.splice(randomIndex, 1);
+  }
+
+  getMovement(id: number) {
+    return this.list.find((tribe) => tribe.id === id)?.movement || 0;
+  }
+
+  getHumanPlayerMovement() {
+    return this.list.find((tribe) => tribe.controlledByPlayer)?.movement || 0;
+  }
+
+  setMovement() {
+    this.list = this.list.map((tribe) => {
+      const movement = tribe.newResources.reduce(
+        (sum, card) => (card.type === 'M' ? sum + 1 : sum),
+        0
+      );
+      tribe.movement = movement;
+      return tribe;
+    });
+  }
+  decreaseMovement(id: number) {
+    const index = this.findTribeIndex(id);
+    this.list[index].movement -= 1;
   }
 }

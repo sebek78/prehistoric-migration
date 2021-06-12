@@ -4,12 +4,13 @@
 <div class="flex">
   <app-map></app-map>
   <app-progress-list
-    [winningCondition]="winningConditions"
+    [winningConditions]="winningConditions"
     [turn]="turn"
     >
   </app-progress-list>
 </div>
 <button (click)="handleNextTurn()">Next</button>
+<p>{{ getPlayerMovement() }}</p>
 <app-logs></app-logs>
 <app-new-resources-dialog
   [open]="openNewResourcesdDialog"

@@ -129,4 +129,16 @@ export class BandsService {
       this.bands[targetBandIndex].size += 1;
     }
   }
+
+  playerHasBandonField(ownerId: number, x: number, y: number) {
+    return (
+      this.bands.find(
+        (band) => band.x === x && band.y === y && band.ownerId === ownerId
+      ) !== undefined
+    );
+  }
+
+  removeEmptyBands() {
+    this.bands = this.bands.filter((band) => band.size > 0);
+  }
 }
