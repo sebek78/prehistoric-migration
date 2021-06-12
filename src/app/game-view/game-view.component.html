@@ -1,21 +1,30 @@
 <app-menu-button [innerText]="'Menu główne'" routerLink="/"></app-menu-button>
-<app-menu-button routerLink="/manual" [innerText]="'Zasady gry'"></app-menu-button>
+<app-menu-button
+  routerLink="/manual"
+  [innerText]="'Zasady gry'"
+></app-menu-button>
 
 <div class="flex">
-  <app-map></app-map>
-  <app-progress-list
-    [winningConditions]="winningConditions"
-    [turn]="turn"
+  <div>
+    <p
+      class="migration-label"
+      [ngClass]="{ 'migration-label--hidden': getPlayerMovement() === 0 }"
     >
-  </app-progress-list>
+      <span *ngIf="getPlayerMovement() > 0">
+        {{ 'Dostępne migracje: ' + getPlayerMovement() }}</span
+      >
+    </p>
+    <app-map></app-map>
+  </div>
+  <app-progress-list [turn]="turn"> </app-progress-list>
 </div>
 <button (click)="handleNextTurn()">Next</button>
-<p>{{ getPlayerMovement() }}</p>
+
 <app-logs></app-logs>
 <app-new-resources-dialog
   [open]="openNewResourcesdDialog"
   [setNewResources]="setNewResourcesDialogStatus"
   [getNextCard]="getNextCard"
-  [rollAgain]="rollAgain">
+  [rollAgain]="rollAgain"
+>
 </app-new-resources-dialog>
-

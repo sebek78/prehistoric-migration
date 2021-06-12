@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AdvancesService } from './advances/advances.service';
+import { AdvanceTypes } from './advances/initAdvancesList';
 import { IResource } from './engine/resources';
 import { LocalStorageService } from './local-storage.service';
 import { RngService } from './rng.service';
@@ -158,4 +159,23 @@ export class TribesService {
     const index = this.findTribeIndex(id);
     this.list[index].movement -= 1;
   }
+
+  checkAdvancesWinningCondition = (tribe: Tribe) => {
+    const advancesNumber: number[] = [];
+
+    for (const type of Object.values(AdvanceTypes)) {
+      const thisTypeNumber = tribe.discoveredAdvances.reduce((ttn, advance) => {
+        if (advance.type === type) return (ttn += 1);
+        return ttn;
+      }, 0);
+      advancesNumber.push(thisTypeNumber);
+    }
+
+    const hasEachTwoTypesOfAdvances = advancesNumber.every((num) => num >= 2);
+
+    return {
+      hasEachTwoTypesOfAdvances,
+      advancesNumber,
+    };
+  };
 }

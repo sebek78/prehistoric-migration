@@ -39,23 +39,4 @@ export class Tribe {
     this.id = index;
     this.undiscoveredAdvances = undiscoveredAdvances;
   }
-
-  checkAdvancesWinningCondition() {
-    const advancesNumber: number[] = [];
-
-    for (const type of Object.values(AdvanceTypes)) {
-      const thisTypeNumber = this.advances.reduce((ttn, advance) => {
-        if (advance.type === type) return (ttn += 1);
-        return ttn;
-      }, 0);
-      advancesNumber.push(thisTypeNumber);
-    }
-
-    const hasEachTwoTypesOfAdvances = advancesNumber.every((num) => num >= 2);
-
-    return {
-      hasEachTwoTypesOfAdvances,
-      advancesNumber,
-    };
-  }
 }

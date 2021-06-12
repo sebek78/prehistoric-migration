@@ -130,7 +130,7 @@ export class BandsService {
     }
   }
 
-  playerHasBandonField(ownerId: number, x: number, y: number) {
+  playerHasBandOnField(ownerId: number, x: number, y: number) {
     return (
       this.bands.find(
         (band) => band.x === x && band.y === y && band.ownerId === ownerId

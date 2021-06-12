@@ -82,21 +82,23 @@ export class GameService {
   }
 
   checkWinningConditions(): WinningCondition[] {
-    let players = this.tribesService.getTribes();
+    let tribes = this.tribesService.getTribes();
 
-    return players.map((player: Tribe): WinningCondition => {
+    return tribes.map((tribe: Tribe): WinningCondition => {
       const settledFields = this.bandsService.getNumberOfSettledFieldsById(
-        player.id
+        tribe.id
       );
+
       const { hasEachTwoTypesOfAdvances, advancesNumber } =
-        player.checkAdvancesWinningCondition();
+        this.tribesService.checkAdvancesWinningCondition(tribe);
+
       const advancesSum = advancesNumber.reduce(
         (sum, currentValue) => sum + currentValue,
         0
       );
 
       return {
-        id: player.id,
+        id: tribe.id,
         settledFields,
         progress: hasEachTwoTypesOfAdvances,
         advancesSum,

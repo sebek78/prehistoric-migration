@@ -27,9 +27,16 @@ export class EngineService {
   currentPlayerId: number = 0;
   currentIndex: number = 0;
   currentPhase: number = 0;
+  selectedField: IField | null = null;
+
   private statusSource = new BehaviorSubject(false);
   newResourcesDialogStatus = this.statusSource.asObservable();
-  selectedField: IField | null = null;
+
+  private newMoveSource = new BehaviorSubject(false);
+  newMoveMessage = this.newMoveSource.asObservable();
+
+  private newAdvancesSource = new BehaviorSubject(false);
+  newAdvances = this.newAdvancesSource.asObservable();
 
   constructor(
     private tribesService: TribesService,
@@ -191,9 +198,14 @@ export class EngineService {
 
   setNewAdvances() {
     const newAdvances = this.tribesService.getNewAdvances();
+    let advancesAdded = false;
     newAdvances.forEach((id) => {
-      if (id !== -1) this.tribesService.setNewAdvance(id);
+      if (id !== -1) {
+        this.tribesService.setNewAdvance(id);
+        if (!advancesAdded) advancesAdded = true;
+      }
     });
+    if (advancesAdded) this.newAdvancesSource.next(true);
   }
 
   /* human player move phase */
@@ -225,16 +237,19 @@ export class EngineService {
     if (this.selectedField) {
       const { x, y } = this.selectedField;
       const { x: newX, y: newY } = field;
-      const hasBands = this.bandsService.playerHasBandonField(
+      const hasBands = this.bandsService.playerHasBandOnField(
         this.currentPlayerId,
         x,
         y
       );
-      if (hasBands) {
+      const distance = Math.sqrt(Math.pow(newX - x, 2) + Math.pow(newY - y, 2));
+
+      if (hasBands && distance < 1.5) {
         this.bandsService.moveBand(this.currentPlayerId, x, y, newX, newY);
         this.tribesService.decreaseMovement(this.currentPlayerId);
         this.deselectMapField(this.selectedField);
         this.bandsService.removeEmptyBands();
+        this.newMoveSource.next(true);
         const availableMoves = this.tribesService.getMovement(
           this.currentPlayerId
         );
