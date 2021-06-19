@@ -1,3 +1,14 @@
 RewriteEngine on
-RewriteCond %{REQUEST_URI} !\.(?:css|js|png|svg|map|woff|woff2)$ [NC]
-RewriteRule .* index.php
+
+# Redirect Trailing Slashes If Not A Folder...
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# if (HTTP_ACCESS.contains('text/html') && file_not_exists(REQUEST_FILENAME))
+RewriteCond %{HTTP_ACCEPT} text/html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [last]
+
+# Any ressources loaded by index.html should behave correctly (i.e: Return 404 if missing)
+RewriteRule ^ - [last]
+

@@ -4,8 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "postbuild": "bash src/postbuild.sh",
+    "build": "ng build --prod",
+    "postbuild": "cp src/.htaccess dist/",
+    "serve": "ng serve --configuration=production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
