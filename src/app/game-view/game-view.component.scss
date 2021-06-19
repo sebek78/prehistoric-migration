@@ -1,6 +1,18 @@
+@import '../../sass/variables';
+
 .flex {
   margin-top: 40px;
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+}
+.migration-label {
+  height: 30px;
+  line-height: 30px;
+  font-size: 24px;
+  background-color: $bgColorLighter;
+  text-align: center;
+  &--hidden {
+    background-color: $bgColor;
+  }
 }

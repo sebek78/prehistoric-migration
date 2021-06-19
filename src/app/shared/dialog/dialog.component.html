@@ -1,5 +1,9 @@
 <div *ngIf="open" class="dialog" (click)="close ? close() : undefined">
-  <div class="dialog__box">
+  <div
+    class="dialog__box"
+    [ngClass] ="maxWidth ? 'dialog__box--max' : 'dialog__box--limited'"
+    (click)="stopPropagation($event)"
+  >
     <ng-content></ng-content>
   </div>
 </div>

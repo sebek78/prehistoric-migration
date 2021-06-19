@@ -10,11 +10,12 @@
       </tr>
     </thead>
     <tbody class="table__body">
-    <tr class="" *ngFor="let result of lastResult">
+    <tr class="" *ngFor="let result of winningConditions">
       <td>
         <div class="cell-flex">
           <span class="color-box" [ngStyle]="{'background-color': getTribeColor(result.id)}"></span>
           <span>{{ getTribeName(result.id) }}</span>
+          <img src="../../../assets/favicon-p.png" *ngIf="getControlledByPlayer(result.id)" />
         </div>
       </td>
       <td>{{ result.settledFields }}</td>

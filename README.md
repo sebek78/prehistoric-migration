@@ -12,7 +12,7 @@ A simple turn-based strategy board game for a single player.
 ## Live version
 
 The content language is Polish. **Not playable yet.**
-[Live version](https://mybytes.pl/prehistoryczna-migracja)
+[Live version](https://prehistoryczna-migracja.mybytes.pl/)
 
 ## Technology stack
 
