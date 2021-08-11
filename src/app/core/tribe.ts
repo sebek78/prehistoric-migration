@@ -26,11 +26,11 @@ export class Tribe {
   color: string;
   controlledByPlayer: boolean;
   id: number;
-  advances: Advance[] = [];
-  undiscoveredAdvances: Advance[];
+  undiscoveredAdvances: Advance[] = [];
   discoveredAdvances: Advance[] = [];
   newResources: IResource[] = [];
   movement: number = 0;
+  lostGame: boolean = false;
 
   constructor(index: number, undiscoveredAdvances: Advance[]) {
     this.name = defaultTribes[index].name;

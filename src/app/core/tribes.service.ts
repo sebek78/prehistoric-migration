@@ -55,6 +55,14 @@ export class TribesService {
     }));
   }
 
+  getLostGame(id: number) {
+    return this.list.find((tribe) => tribe.id === id)?.lostGame;
+  }
+
+  setLostGame(index: number) {
+    this.list[index].lostGame = true;
+  }
+
   getTribe(index: number) {
     return this.list[index];
   }
@@ -178,4 +186,11 @@ export class TribesService {
       advancesNumber,
     };
   };
+  getTechnologyLevel(tribeId: number, technology: AdvanceTypes) {
+    const index = this.findTribeIndex(tribeId);
+    return this.list[index].discoveredAdvances.reduce(
+      (sum, advance) => (advance.type === technology ? sum + 1 : sum),
+      0
+    );
+  }
 }

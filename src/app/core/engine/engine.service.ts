@@ -14,6 +14,7 @@ import { Resources, IResource } from './resources';
 import { logTypes } from './log';
 import { HumanActions } from './human-actions';
 import { IField, MapService } from '../map.service';
+import { EventTypes } from './events';
 
 @Injectable({
   providedIn: 'root',
@@ -92,10 +93,7 @@ export class EngineService {
             this.currentPlayerId
           );
           const { x, y } = selectedMaxSizeBand;
-          const availableFields = this.mapService.getAvailableFields(x, y);
-          const selectedField = this.aiActions.makeMove(availableFields);
-          const { x: newX, y: newY } = selectedField;
-          this.bandsService.moveBand(this.currentPlayerId, x, y, newX, newY);
+          this.moveBand(x, y, this.currentPlayerId);
           this.tribesService.decreaseMovement(this.currentPlayerId);
           availableMoves -= 1;
         }
@@ -114,8 +112,13 @@ export class EngineService {
       }
       return;
     }
+    // events
     if (this.currentPhase === 3) {
-      console.log('event phase (3)');
+      this.checkEventsForFields();
+      this.currentPhase += 1;
+    }
+    if (this.currentPhase === 4) {
+      console.log('phase 4');
     }
     this.currentIndex = 0;
     this.currentPhase = 0;
@@ -145,13 +148,23 @@ export class EngineService {
   }
 
   aiNewResuorces = () => {
-    let cards = this.drawNewResources(this.currentPlayerId);
-    cards = this.aiActions.newResourcesDecision(cards);
-    const cardsLog = `Player Id:${this.currentPlayerId} ${cards
-      .map((card) => card.type)
-      .join(',')}`;
-    this.loggerService.addLog(logTypes.phase1, this.currentTurn, cardsLog);
-    this.tribesService.setNewResources(this.currentPlayerId, cards);
+    const lostGame = this.tribesService.getLostGame(this.currentPlayerId);
+    if (lostGame) {
+      this.tribesService.setNewResources(this.currentPlayerId, []);
+      this.loggerService.addLog(
+        logTypes.phase1,
+        this.currentTurn,
+        'skip - lost game'
+      );
+    } else {
+      let cards = this.drawNewResources(this.currentPlayerId);
+      cards = this.aiActions.newResourcesDecision(cards);
+      const cardsLog = `Player Id:${this.currentPlayerId} ${cards
+        .map((card) => card.type)
+        .join(',')}`;
+      this.loggerService.addLog(logTypes.phase1, this.currentTurn, cardsLog);
+      this.tribesService.setNewResources(this.currentPlayerId, cards);
+    }
   };
 
   playerNewResuorces = () => {
@@ -208,6 +221,14 @@ export class EngineService {
     if (advancesAdded) this.newAdvancesSource.next(true);
   }
 
+  /* automatic random direction move */
+  moveBand(fromX: number, fromY: number, ownerId: number) {
+    const availableFields = this.mapService.getAvailableFields(fromX, fromY);
+    const selectedField = this.aiActions.makeMove(availableFields);
+    const { x: newX, y: newY } = selectedField;
+    this.bandsService.moveBand(ownerId, fromX, fromY, newX, newY);
+  }
+
   /* human player move phase */
 
   setSelectedField(field: IField) {
@@ -259,5 +280,72 @@ export class EngineService {
         this.selectMapField(field);
       }
     }
+  }
+
+  // events
+  checkEventsForFields() {
+    this.mapService.fields.forEach((field) => {
+      const bandsOnField = this.bandsService.getBandsByPosition(
+        field.x,
+        field.y
+      );
+      if (bandsOnField.length > 0) {
+        const event = this.rngService.drawEvent();
+
+        if (event.type !== EventTypes.NoEvent) {
+          bandsOnField.forEach((band) => {
+            const technologyLevel = this.tribesService.getTechnologyLevel(
+              band.ownerId,
+              event.skill
+            );
+            const randomD6 = this.rngService.draw(6) + 1;
+            const result = randomD6 - technologyLevel;
+
+            const DIFFICULTY_LEVEL = 1; // the designed difficulty level is equal to 0
+
+            if (event.type === EventTypes.Disaster) {
+              if (result > DIFFICULTY_LEVEL) {
+                band.size -= 1;
+                // console.log(`${JSON.stringify(band.ownerId)} loose one band`);
+              }
+            }
+
+            if (event.type === EventTypes.Progress) {
+              if (result <= DIFFICULTY_LEVEL) {
+                // console.log('gain one advance');
+                this.tribesService.setNewAdvance(band.ownerId);
+              }
+            }
+            if (event.type === EventTypes.Expansion) {
+              if (result <= DIFFICULTY_LEVEL) {
+                band.size += 1;
+                // console.log('new band');
+              }
+            }
+            if (event.type === EventTypes.Migration) {
+              if (result <= DIFFICULTY_LEVEL) {
+                this.moveBand(band.x, band.y, band.ownerId);
+                // console.log('Migration: move 1 Band');
+              } else {
+                band.size -= 1;
+                // console.log('Migration: lose 1 Band');
+              }
+            }
+            this.bandsService.removeEmptyBands();
+          });
+        }
+      }
+    });
+
+    const tribes = this.tribesService.getTribes();
+    tribes.map((tribe) => {
+      let hasAnyBands = this.bandsService.hasBands(tribe.id);
+      const lostGame = this.tribesService.getLostGame(tribe.id);
+      if (!lostGame && !hasAnyBands) {
+        console.log(tribe.id, 'lost');
+        tribe.lostGame = true;
+      }
+      return tribe;
+    });
   }
 }

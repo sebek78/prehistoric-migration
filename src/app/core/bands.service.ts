@@ -43,6 +43,10 @@ export class BandsService {
     return this.bands.filter((band) => band.ownerId === id);
   }
 
+  hasBands(id: number) {
+    return this.getBandsById(id).length > 0;
+  }
+
   getBandsByPosition(x: number, y: number) {
     return this.bands.filter((band) => band.x === x && band.y === y);
   }
