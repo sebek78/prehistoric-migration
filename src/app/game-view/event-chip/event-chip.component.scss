@@ -1,0 +1,15 @@
+@import '../../../sass/variables';
+
+.event-chip {
+  width: 58px;
+  height: 58px;
+  background-color: $infoColor;
+  z-index: 2;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 60px;
+  color: white;
+  font-size: 48px;
+}

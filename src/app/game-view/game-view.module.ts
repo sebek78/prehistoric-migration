@@ -10,6 +10,8 @@ import { GameViewComponent } from './game-view.component';
 import { ProgressListComponent } from './progress-list/progress-list.component';
 import { LogsComponent } from './logs/logs.component';
 import { NewResourcesDialogComponent } from './new-resources-dialog/new-resources-dialog.component';
+import { EventChipComponent } from './event-chip/event-chip.component';
+import { EventLogDialogComponent } from './event-log-dialog/event-log-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { NewResourcesDialogComponent } from './new-resources-dialog/new-resource
     ProgressListComponent,
     LogsComponent,
     NewResourcesDialogComponent,
+    EventChipComponent,
+    EventLogDialogComponent,
   ],
   imports: [
     CommonModule,

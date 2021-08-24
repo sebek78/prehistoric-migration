@@ -15,6 +15,7 @@ import { logTypes } from './log';
 import { HumanActions } from './human-actions';
 import { IField, MapService } from '../map.service';
 import { EventTypes } from './events';
+import { EventsService } from './events.service';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +45,8 @@ export class EngineService {
     private bandsService: BandsService,
     private rngService: RngService,
     private loggerService: LoggerService,
-    private mapService: MapService
+    private mapService: MapService,
+    private eventsService: EventsService
   ) {
     this.maxPlayers = MAX_PLAYERS;
     this.aiActions = new AiActions();
@@ -292,7 +294,7 @@ export class EngineService {
       if (bandsOnField.length > 0) {
         const event = this.rngService.drawEvent();
 
-        if (event.type !== EventTypes.NoEvent) {
+        if (event.eventType !== EventTypes.NoEvent) {
           bandsOnField.forEach((band) => {
             const technologyLevel = this.tribesService.getTechnologyLevel(
               band.ownerId,
@@ -303,32 +305,70 @@ export class EngineService {
 
             const DIFFICULTY_LEVEL = 1; // the designed difficulty level is equal to 0
 
-            if (event.type === EventTypes.Disaster) {
-              if (result > DIFFICULTY_LEVEL) {
-                band.size -= 1;
-                // console.log(`${JSON.stringify(band.ownerId)} loose one band`);
+            if (
+              event.eventType === EventTypes.Disaster &&
+              result > DIFFICULTY_LEVEL
+            ) {
+              band.size -= 1;
+              if (this.tribesService.getTribeControlledByPlayer(band.ownerId)) {
+                this.eventsService.createEventLog(
+                  event,
+                  field,
+                  'Straciłeś jedną bandę.'
+                );
               }
             }
 
-            if (event.type === EventTypes.Progress) {
-              if (result <= DIFFICULTY_LEVEL) {
-                // console.log('gain one advance');
-                this.tribesService.setNewAdvance(band.ownerId);
+            if (
+              event.eventType === EventTypes.Progress &&
+              result <= DIFFICULTY_LEVEL
+            ) {
+              this.tribesService.setNewAdvance(band.ownerId);
+              // TODO: add new advance info
+              if (this.tribesService.getTribeControlledByPlayer(band.ownerId)) {
+                this.eventsService.createEventLog(
+                  event,
+                  field,
+                  'Zyskałeś wynalazek.'
+                );
               }
             }
-            if (event.type === EventTypes.Expansion) {
-              if (result <= DIFFICULTY_LEVEL) {
-                band.size += 1;
-                // console.log('new band');
+            if (
+              event.eventType === EventTypes.Expansion &&
+              result <= DIFFICULTY_LEVEL
+            ) {
+              band.size += 1;
+              if (this.tribesService.getTribeControlledByPlayer(band.ownerId)) {
+                this.eventsService.createEventLog(
+                  event,
+                  field,
+                  'Zyskałeś jedną bandę.'
+                );
               }
             }
-            if (event.type === EventTypes.Migration) {
+            if (event.eventType === EventTypes.Migration) {
               if (result <= DIFFICULTY_LEVEL) {
                 this.moveBand(band.x, band.y, band.ownerId);
-                // console.log('Migration: move 1 Band');
+                if (
+                  this.tribesService.getTribeControlledByPlayer(band.ownerId)
+                ) {
+                  this.eventsService.createEventLog(
+                    event,
+                    field,
+                    'Jedna z band migowała.'
+                  );
+                }
               } else {
                 band.size -= 1;
-                // console.log('Migration: lose 1 Band');
+                if (
+                  this.tribesService.getTribeControlledByPlayer(band.ownerId)
+                ) {
+                  this.eventsService.createEventLog(
+                    event,
+                    field,
+                    'Straciłeś jedną bandę w czasie migracji.'
+                  );
+                }
               }
             }
             this.bandsService.removeEmptyBands();
@@ -342,6 +382,7 @@ export class EngineService {
       let hasAnyBands = this.bandsService.hasBands(tribe.id);
       const lostGame = this.tribesService.getLostGame(tribe.id);
       if (!lostGame && !hasAnyBands) {
+        // TODO: add tribe lost info
         console.log(tribe.id, 'lost');
         tribe.lostGame = true;
       }

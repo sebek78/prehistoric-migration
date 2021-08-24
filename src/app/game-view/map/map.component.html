@@ -8,5 +8,16 @@
     <div *ngFor="let counter of checkBands(field.x, field.y)">
       <app-counter [counter]="counter"></app-counter>
     </div>
+    <app-event-chip
+      *ngIf="showEventChip(field.id)"
+      (click) = "showEventDialog(field.id)"
+      ></app-event-chip>
   </div>
+  <app-dialog
+    [open]="openEventLogDialog"
+    [close]="handleCloseEventDialog"
+    [maxWidth]="false"
+  >
+    <app-event-log-dialog [eventLog]="this.currentEventLog"></app-event-log-dialog>
+  </app-dialog>
 </div>

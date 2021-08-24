@@ -1,0 +1,9 @@
+<div class="event-dialog">
+  <div class="event-dialog__event-type">{{ eventLog?.event?.eventType || 'Migracja' }}</div>
+  <div class="event-dialog__label">{{ eventLog?.event?.label || 'Nowe Łowiska'}}</div>
+  <div  class="event-dialog__technology">Technologia: {{ eventLog?.event?.skill || 'Łowienie ryb'}}</div>
+  <div class="event-dialog__message">{{ eventLog?.message || 'Straciłeś jedną bandę' }}</div>
+  <div class="event-dialog__close-button-wrapper">
+    <app-menu-button innerText="Zamknij"></app-menu-button>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+@import '../../../sass/variables';
+
+.event-dialog {
+  border: 2px solid $dangerColor;
+  border-radius: 4px;
+  text-align: center;
+
+  &__event-type {
+    background-color: $dangerColor;
+    color: white;
+    font-size: 20px;
+    padding: 4px;
+  }
+  &__label {
+    background-color: $bgColorLight;
+    font-size: 20px;
+    padding-top: 8px;
+    font-weight: bold;
+  }
+  &__technology {
+    background-color: $bgColorLight;
+    font-size: 16px;
+    padding-bottom: 8px;
+    font-style: italic;
+  }
+  &__message {
+    font-size: 18px;
+    background-color: $bgColorLighter;
+    padding: 16px;
+  }
+  &__close-button-wrapper {
+    @include flex-row-center;
+    padding: 8px;
+  }
+}
